@@ -1,14 +1,19 @@
 type Query {
+
+  user(name: String, pw: String): User
+  user(id): User
+
   # get order
   order(id: ID): Order
+  orders(userId: ID): [Order]!
   # get all orders, pagination
   orders(
     limit:  Int
     offset: Int
   ): [Order]!
 
-  # get rate by user
-  
+  # get rates by user
+  rates(userId: ID, isReceive: Boolean): [Rate]!
 }
 
 type Mutation {
@@ -32,7 +37,7 @@ type Order{
 
 type Rate{
     id: ID!
-    score: Int!
+    score: Float!
     order: order!
     comment: String
     rate_from: user!
@@ -43,8 +48,8 @@ type User{
     id: ID!
     name: String!
     password: String!
-    buyer_rate: rate
-    seller_rate: rate
+    buyer_rate: Float
+    seller_rate: Float
 }
 
 type Address{
