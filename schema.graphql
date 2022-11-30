@@ -1,0 +1,83 @@
+type Query {
+  # get order
+  order(id: ID): Order
+  # get all orders, pagination
+  orders(
+    limit:  Int
+    offset: Int
+  ): [Order]!
+
+  # get rate by user
+  
+}
+
+type Mutation {
+  
+}
+
+type Order{
+    order_id: ID!
+    production: production!
+    quantity: Int!
+    buyer: user!
+    seller: user!
+    status: String!
+    created_timestamp: Int!
+    trading_timestamp: Int
+    reject_timestamp: Int
+    confirm_timestamp: Int
+    address_from: address!
+    address_to_id: address!
+}
+
+type Rate{
+    id: ID!
+    score: Int!
+    order: order!
+    comment: String
+    rate_from: user!
+    rate_to: user!
+}
+
+type User{
+    id: ID!
+    name: String!
+    password: String!
+    buyer_rate: rate
+    seller_rate: rate
+}
+
+type Address{
+    address_id: ID!
+    content: String!
+    user: user!
+    is_default: Boolean
+}
+
+type Production{
+    production_id: ID!
+    user: user!
+    price: Int!
+    name: String!
+    condition: String
+    quantity: Int!
+    description: String
+    publish_time: Int!
+    address: address
+    view_time: Int
+}
+
+type Chat{
+    chat_id:        ID
+    participant:    [user]
+    chat_timestamp: Int!
+}
+
+type Message{
+    message_id:     ID
+    chat:           chat
+    sender:         user
+    content:        String
+    message_timestamp:  date
+    status:         String
+}
