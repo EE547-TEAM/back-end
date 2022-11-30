@@ -9,12 +9,11 @@ type Query {
   # get order
   order(orderId: ID): Order
 
-  # if we use userId -> seller.id, we get all sell orders
-  # if we use userId -> buyer.id, we get all purhchasing orders
-  orders(userId: ID): [Order]!
+  #get orders by userId
+  orders(userId: ID, isBuyer: Boolean): [Order]!
 
   # get a buyer/seller's all orders according to the status
-  orders(userId: ID, status: String): [order]
+  orders(userId: ID, isBuyer: Boolean, status: OrderStatusEnum): [order]
   
   # get all orders, pagination
   orders(
@@ -23,7 +22,12 @@ type Query {
   ): [Order]!
 
   # get rates by user
-  rates(userId: ID, isReceive: Boolean): [Rate]!
+  rates(userId: ID, isBuyer: Boolean): [Rate]!
+
+  rates(
+    limit: Int
+    offset: Int
+  ): [Rate]
 
   chat(chatId: ID): chat
   chats(userId: ID): [Chat]
@@ -32,7 +36,7 @@ type Query {
     offset: Int
   )[chat]
 
-  messages(chat_id: ID): [Message]
+  message(chat_id: ID): [Message]
   # get last message for representation
   message(chat_id: ID): Message
 
@@ -54,6 +58,7 @@ type Query {
 }
 
 
+
 type Mutation {
     userCreate(
         userInput:      UserCreateInput
@@ -64,16 +69,15 @@ type Mutation {
     ): Production
 
     # 1. order succeed, we now change the number of items
-    productoinUpdate(
-        productionId:       ID!
-        orderId:            ID!
-    ): Production
-
     # 2. A certain user add new same items
     productionUpdate(
-        userId:             ID!
+        productionId:       ID!
         quantity:           Int!
     ): Production
+
+    productionDelete(
+        productionId:       ID!
+    ): Boolean
 
     rateCreate(
         score:              Int!
@@ -135,37 +139,48 @@ input ProductionInput{
     quantity:               Int!
     description:            String
     publish_time:           Int
-    address:                Address
+    addressId:              ID
 }
 
 input OrderInput{
     productionId:           ID!
-    quantity:               Int
-    buyerId:                ID
-    sellerId:               ID
-    status:                 String
-    created_timestamp:      Int
+    quantity:               Int!
+    buyerId:                ID!
+    sellerId:               ID!
+    status:                 OrderStatusEnum!
+    created_timestamp:      Int!
     trading_timestamp       Int
     reject_timestamp        Int
     confirm_timestamp       Int
-    address_from_Id         ID
-    address_to_Id           ID     
+    address_from_Id         ID!
+    address_to_Id           ID! 
 }
 
+enum OrderStatusEnum{
+    created
+    trading
+    reject
+    confirm
+}
+
+enum MessageStatusEnum(
+    read
+    unread
+)
 
 type Order{
-    orderId: ID!
-    production: Production!
-    quantity: Int!
-    buyer: User!
-    seller: User!
-    status: String!
-    created_timestamp: Int!
-    trading_timestamp: Int
-    reject_timestamp: Int
-    confirm_timestamp: Int
-    address_from: Address!
-    address_to_id: Address!
+    orderId:                        ID!
+    production:                     Production!
+    quantity:                       Int!
+    buyer:                          User!
+    seller:                         User!
+    status:                         OrderStatusEnum!
+    created_timestamp:              Int!
+    trading_timestamp:              Int
+    reject_timestamp:               Int
+    confirm_timestamp:              Int
+    address_from:                   Address!
+    address_to_id:                  Address!
 }
 
 type Rate{
@@ -197,25 +212,25 @@ type Production{
     user: User!
     price: Int!
     name: String!
-    condition: String
+    condition: String!
     quantity: Int!
     description: String
     publish_time: Int!
-    address: Address
+    address: Address!
     view_time: Int
 }
 
 type Chat{
-    chatId:        ID
-    participant:    [User]
+    chatId:        ID!
+    participant:    [User]!
     chat_timestamp: Int!
 }
 
 type Message{
-    messageId:      ID
-    chat:           Chat
-    sender:         User
-    content:        String
+    messageId:          ID!
+    chat:               Chat!
+    sender:             User!
+    content:            String!
     message_timestamp:  Int
-    status:         String
+    status:             MessageStatusEnum!
 }
