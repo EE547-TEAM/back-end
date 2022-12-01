@@ -28,5 +28,9 @@ jobs:
         cache: 'npm'
     - run: npm ci
     - run: cur_pwd=pwd
-    - run: pm2 stop backend
-    - run: pm2 start $cur_pwd/bin/www --name backend
+    - run: if pm2 delete 'backend'; then               
+             echo "stopped";             
+           else               
+             echo "set up";           
+           fi
+    - run: pm2 start $cur_pwd/bin/www --name 'backend'
