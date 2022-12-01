@@ -1,0 +1,236 @@
+type Query {
+    
+  # get user from name and pw
+  user(name: String, pw: String): User
+
+  # get user from id
+  user(id): User
+
+  # get order
+  order(orderId: ID): Order
+
+  #get orders by userId
+  orders(userId: ID, isBuyer: Boolean): [Order]!
+
+  # get a buyer/seller's all orders according to the status
+  orders(userId: ID, isBuyer: Boolean, status: OrderStatusEnum): [Order]
+  
+  # get all orders, pagination
+  orders(
+    limit:  Int
+    offset: Int
+  ): [Order]!
+
+  # get rates by user
+  rates(userId: ID, isBuyer: Boolean): [Rate]!
+
+  rates(
+    limit: Int
+    offset: Int
+  ): [Rate]
+
+  chat(chatId: ID): Chat
+  chats(userId: ID): [Chat]
+  chats(
+    limit: Int
+    offset: Int
+  )[Chat]
+
+  message(chat_id: ID): [Message]
+  # get last message for representation
+  message(chat_id: ID): Message
+
+  # get production from id
+  production(productionId: ID): Production
+
+  # according to the name and address, get the production
+  production(name: String, Address: String): Production
+
+  # get a seller's all stock(available now)
+  productions(userId: ID): [Production]
+
+  # search on map, get all productions 
+  # if dont pass publish_time, will show all products
+  productions_onmap(name: String, publish_time: Int): [Production]
+
+  # get Address from ID
+  address(addressId: ID): Address
+}
+
+
+
+type Mutation {
+    userCreate(
+        userInput:          UserCreateInput
+    ): User
+
+    productionCreate(
+        productionInput:    ProductionInput
+    ): Production
+
+    # 1. order succeed, we now change the number of items
+    # 2. A certain user add new same items
+    productionUpdate(
+        productionId:       ID!
+        quantity:           Int!
+    ): Production
+
+    productionDelete(
+        productionId:       ID!
+    ): Boolean
+
+    rateCreate(
+        score:              Int!
+        orderId:            ID!
+        comment:            String
+        rate_from_ID:       ID!
+        rate_to_ID:         ID!   
+    ): Rate
+
+    UserrateUpdate(
+        userId:             ID!
+        isSeller:           Boolean
+    ): User
+
+    orderCreate(
+        orderInput: OrderInput
+    ): Order
+
+    # modify the status of an order
+    # ex: interested -> trading, give time T, now trading_timestamp Updates
+    orderUpdate(
+        orderID:            ID!
+        status:             String!
+        modifiedTime:       Int
+    ): Order
+    
+    addressCreate(
+        content:            String!
+        userId:             ID!
+        is_default:         Boolean
+    ): Address
+
+    chatCreate(
+        participantId:      [ID]!
+        chat_timestamp      Int
+    ): Chat
+
+    messageCreate(
+        chatId:             ID!
+        senderID:           ID!
+        content:            String!
+        message_timestamp:  Int
+        status:             MessageStatusEnum!
+    ): Message
+}
+
+input UserCreateInput{
+    username:               String!
+    password:               String!
+    initial_buyer_rate:     Int
+    initial_seller_rate:    Int
+}
+
+input ProductionInput{
+    userId:                 ID!
+    price:                  Int!
+    name:                   String!
+    condition:              String!
+    quantity:               Int!
+    description:            String
+    publish_time:           Int
+    addressId:              ID
+}
+
+input OrderInput{
+    productionId:           ID!
+    quantity:               Int!
+    buyerId:                ID!
+    sellerId:               ID!
+    status:                 OrderStatusEnum!
+    created_timestamp:      Int!
+    trading_timestamp_init  Int
+    reject_timestamp_init   Int
+    confirm_timestamp_init  Int
+    address_from_Id         ID!
+    address_to_Id           ID! 
+}
+
+enum OrderStatusEnum{
+    created
+    trading
+    reject
+    confirm
+}
+
+enum MessageStatusEnum(
+    read
+    unread
+)
+
+type Order{
+    orderId:                        ID!
+    production:                     Production!
+    quantity:                       Int!
+    buyer:                          User!
+    seller:                         User!
+    status:                         OrderStatusEnum!
+    created_timestamp:              Int!
+    trading_timestamp:              Int
+    reject_timestamp:               Int
+    confirm_timestamp:              Int
+    address_from:                   Address!
+    address_to_id:                  Address!
+}
+
+type Rate{
+    rateId: ID!
+    score: Float!
+    order: Order!
+    comment: String
+    rate_from: User!
+    rate_to: User!
+}
+
+type User{
+    userId: ID!
+    name: String!
+    password: String!
+    buyer_rate: Float
+    seller_rate: Float
+}
+
+type Address{
+    addressId: ID!
+    content: String!
+    user: User!
+    is_default: Boolean
+}
+
+type Production{
+    productionId: ID!
+    user: User!
+    price: Int!
+    name: String!
+    condition: String!
+    quantity: Int!
+    description: String
+    publish_time: Int!
+    address: Address!
+    view_time: Int
+}
+
+type Chat{
+    chatId:        ID!
+    participant:    [User]!
+    chat_timestamp: Int!
+}
+
+type Message{
+    messageId:          ID!
+    chat:               Chat!
+    sender:             User!
+    content:            String!
+    message_timestamp:  Int
+    status:             MessageStatusEnum!
+}
