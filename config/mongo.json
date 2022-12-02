@@ -1,8 +1,0 @@
-{
-  "host": "localhost",
-  "port": "27017",
-  "db": "ee547_hw",
-  "opts": {
-    "useUnifiedTopology": true
-  }
-}
