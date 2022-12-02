@@ -34,4 +34,4 @@ jobs:
            else               
              echo "set up";           
            fi
-    - run: NODE_ENV=${{env.NODE_ENV}} pm2 start ./bin/www --name 'backend'
+    - run: NODE_ENV=$NODE_ENV pm2 start ./bin/www --name 'backend'
