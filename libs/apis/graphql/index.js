@@ -1,12 +1,5 @@
-const models = require('../../models');
-
-async function matchUserAndPassword({ name, pw }) {
-  if (models.User === undefined) {
-    throw new Error('no schema found!');
-  }
-  return { name, pw };
-}
+const user = require('./user');
 
 module.exports = {
-  matchUserAndPassword,
+  ...user,
 };
