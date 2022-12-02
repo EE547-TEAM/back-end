@@ -1,25 +1,25 @@
 /**
- * Define User API implement here
+ * Define Rate API implement here
  * see any details about model, check the example under /examples/mongoose.js
  * or visit
  * https://mongoosejs.com/docs/models.html
  */
 // eslint-disable-next-line no-unused-vars
 const { model, Document } = require('mongoose');
-const { User: userSchema } = require('../../schema');
+const { Rate: rateSchema } = require('../../schema');
 
-// to create user document for mongoDB, or other operations we need.
-const User = model('User', userSchema);
+// to create rate document for mongoDB, or other operations we need.
+const Rate = model('Rate', rateSchema);
 
 /**
  *
  * @param {*} param0
  * @returns
  */
-async function findProductbyUser({ email }) {
-  return User.find({ email });
+async function findProductbyRate({ email }) {
+  return Rate.find({ email });
 }
 
 module.exports = {
-  findProductbyUser,
+  findProductbyRate,
 };

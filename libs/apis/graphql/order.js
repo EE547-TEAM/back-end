@@ -1,25 +1,24 @@
 /**
- * Define User API implement here
+ * Define Order API implement here
  * see any details about model, check the example under /examples/mongoose.js
  * or visit
  * https://mongoosejs.com/docs/models.html
  */
 // eslint-disable-next-line no-unused-vars
 const { model, Document } = require('mongoose');
-const { User: userSchema } = require('../../schema');
+const { Order: orderSchema } = require('../../schema');
 
 // to create user document for mongoDB, or other operations we need.
-const User = model('User', userSchema);
+const Order = model('Order', orderSchema);
 
 /**
- *
- * @param {*} param0
- * @returns
+ * @param {{email: string, pw: string}} params
+ * @returns {Document}
  */
-async function findProductbyUser({ email }) {
-  return User.find({ email });
+async function matchOrder({ name }) {
+  return Order.findOne({ name });
 }
 
 module.exports = {
-  findProductbyUser,
+  matchOrder,
 };
