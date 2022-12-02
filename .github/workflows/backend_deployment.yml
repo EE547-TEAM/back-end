@@ -34,6 +34,5 @@ jobs:
            fi
     - name: start pm2 service
       env:
-        secrets: ${{ secrets }}
         NODE_ENV: ${{ secrets.NODE_ENV }}
       run: NODE_ENV=$NODE_ENV pm2 start ./bin/www --name 'backend'
