@@ -4,16 +4,16 @@
  * or visit
  * https://mongoosejs.com/docs/models.html
  */
-const { model } = require('mongoose');
+// eslint-disable-next-line no-unused-vars
+const { model, Document } = require('mongoose');
 const { User: userSchema } = require('../../schema');
 
 // to create user document for mongoDB, or other operations we need.
-const User = model('Test', userSchema);
+const User = model('User', userSchema);
 
 /**
- *
- * @param {*} param0
- * @returns
+ * @param {{email: string, pw: string}} params
+ * @returns {Document}
  */
 async function matchUserAndPassword({ email, pw }) {
   return User.findOne({ email, password: pw });
