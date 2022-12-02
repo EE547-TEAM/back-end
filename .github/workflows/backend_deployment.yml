@@ -20,20 +20,20 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-      env:
-        secrets: ${{ secrets }}
-        NODE_ENV: ${{ secrets.NODE_ENV }}
     - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: echo $secrets
     - run: npm ci
     - run: if pm2 delete 'backend'; then               
              echo "stopped";             
            else               
              echo "set up";           
            fi
-    - run: NODE_ENV=$NODE_ENV pm2 start ./bin/www --name 'backend'
+    - name: start pm2 service
+      env:
+        secrets: ${{ secrets }}
+        NODE_ENV: ${{ secrets.NODE_ENV }}
+      run: NODE_ENV=$NODE_ENV pm2 start ./bin/www --name 'backend'
