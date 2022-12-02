@@ -4,43 +4,53 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
-const { initDB } = require('./libs/mongoDB');
+const { graphql } = require('graphql');
+const normalRoute = require('./routes/index');
+const { initMongoDB } = require('./libs/db');
 const testMongoose = require('./examples/mongoose');
 const { isDev } = require('./libs/env');
 
-const app = express();
+async function startApp() {
+  // init db
+  const initTasks = [
+    initMongoDB(),
+  ];
+  await Promise.all(initTasks);
 
-initDB()
-  .then(() => {
-    console.log('db connnected');
-    // see examples, how to use mongoose.
-    if (isDev) testMongoose();
+  // development env test
+  console.log('db connnected');
+  // see examples, how to use mongoose.
+  if (isDev) testMongoose();
 
-    app.use(logger('dev'));
-    app.use(express.json());
-    app.use(express.urlencoded({ extended: false }));
-    app.use(cookieParser());
-    app.use(express.static(path.join(__dirname, 'public')));
+  // init server
+  const app = express();
 
-    app.use('/', indexRouter);
-    app.use('/users', usersRouter);
+  app.use(logger('dev'));
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: false }));
+  app.use(cookieParser());
+  app.use(express.static(path.join(__dirname, 'public')));
 
-    // catch 404 and forward to error handler
-    app.use((_req, _res, next) => {
-      next(createError(404));
-    });
+  // register router
+  app.use('/', normalRoute);
+  app.use('/graphql', graphql);
 
-    // error handler
-    app.use((err, req, res) => { // _next
-      // set locals, only providing error in development
-      res.locals.message = err.message;
-      res.locals.error = req.app.get('env') === 'development' ? err : {};
-      // render the error page
-      res.status(err.status || 500);
-      res.render('error');
-    });
+  // catch 404 and forward to error handler
+  app.use((_req, _res, next) => {
+    next(createError(404));
   });
 
-module.exports = app;
+  // error handler
+  app.use((err, req, res) => { // _next
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
+    // render the error page
+    res.status(err.status || 500);
+    res.render('error');
+  });
+
+  return app;
+}
+
+module.exports = startApp;
