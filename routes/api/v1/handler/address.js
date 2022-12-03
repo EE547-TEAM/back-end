@@ -18,9 +18,11 @@ router.post(ADDRESS, (req, res) => {
   const {
     content, userId, def,
   } = req.body;
-  addressCreate({
-    content, userId, def,
-  });
+  if (content !== '' || userId !== '') {
+    addressCreate({
+      content, userId, def,
+    });
+  }
   res.send(200);
 });
 router.get(ADDRESS, (req, res) => {
