@@ -1,7 +1,7 @@
 const e = require('express');
 const express = require('express');
 const { concatAST } = require('graphql');
-const { ORDER } = require('../../../../config/API_PATH');
+const { ORDER, ORDER_ID, ORDER_USER } = require('../../../../config/API_PATH');
 const { orderCreate, matchOrderById, matchOrderBySeller, matchcOrderByBuyer, updateOrder } = require('../../../../libs/apis/graphql');
 
 const router = express.Router();
@@ -14,14 +14,14 @@ router.post(ORDER, (req, res) => {
 })
 
 
-router.get('/order/:orderId', async (req, res) => {
+router.get(ORDER_ID, async (req, res) => {
     const orderId = req.params.orderId;
     console.log(orderId);
     const order = await matchOrderById({ orderId });
     res.send(order);
 })
 
-router.get('/order/:userId/:status/:isSeller', async (req, res) => {
+router.get(ORDER_USER, async (req, res) => {
     const userId = req.params.userId;
     const status = req.params.status;
     const isSeller = req.params.isSeller;
