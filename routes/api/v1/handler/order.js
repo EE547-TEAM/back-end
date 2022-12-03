@@ -25,9 +25,8 @@ router.get('/order/:userId/:status/:isSeller', async (req, res) => {
     const userId = req.params.userId;
     const status = req.params.status;
     const isSeller = req.params.isSeller;
-    // console.log(userId, status, isSeller);
 
-    if(isSeller){
+    if(isSeller == true){
         const order = await matchOrderBySeller({ userId, status });
         res.send(order);
     }else{
@@ -39,10 +38,6 @@ router.get('/order/:userId/:status/:isSeller', async (req, res) => {
 router.put(ORDER, async (req, res) => {
     const { orderId, status } = req.body;
     const modifiedTime = new Date();
-    console.log(".....")
-    console.log(orderId);
-    console.log(status);
-    console.log("......");
     updateOrder({ orderId, status, modifiedTime });
     res.send(200);
 })

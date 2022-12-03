@@ -53,7 +53,7 @@ async function matchOrderById({ orderId }) {
  * @returns {Documents}
  */
 async function matchOrderBySeller({ userId, status }) {
-  return Order.find({ userId, status });
+  return Order.find({ sellerID: userId, status });
 }
 
 /**
@@ -62,12 +62,15 @@ async function matchOrderBySeller({ userId, status }) {
  * @returns {Documents}
  */
 async function matchcOrderByBuyer({ userId, status }) {
-  return Order.find({ userId, status });
+  console.log(userId);
+  console.log(status);
+  return Order.find({ buyerID: userId, status });
 }
 
 /**
  * 
  * @param {orderId: Schema.Types.ObjectId, status: String, modifiedTime: Date} params
+ * when there is status change, update the status and corresponding timestamp
  */
 async function updateOrder({ orderId, status, modifiedTime}) {
 
