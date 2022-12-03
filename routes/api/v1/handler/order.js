@@ -13,13 +13,6 @@ router.post(ORDER, (req, res) => {
     res.send(200);
 })
 
-// router.get(ORDER, async (req, res) => {
-//     const orderId = req.query.orderId;
-//     // console.log(req);
-//     console.log(orderId);
-//     const order = await matchOrderById({ orderId });
-//     res.send(order);
-// })
 
 router.get('/order/:orderId', async (req, res) => {
     const orderId = req.params.orderId;
@@ -29,8 +22,6 @@ router.get('/order/:orderId', async (req, res) => {
 })
 
 router.get('/order/:userId/:status/:isSeller', async (req, res) => {
-    // console.log(req.params);
-    // const { userId, status, isSeller } = req.params;
     const userId = req.params.userId;
     const status = req.params.status;
     const isSeller = req.params.isSeller;
