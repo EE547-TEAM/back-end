@@ -5,19 +5,17 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
 const normalRoute = require('./routes/index');
-const { initMongoDB, getGraphqlSchemaFromFile } = require('./libs/db');
+const { initMongoDB } = require('./libs/db');
 const testMongoose = require('./examples/mongoose');
 const { isDev } = require('./libs/env');
-const setRouter = require('./routes/graphql');
+const apiV1 = require('./routes/api/v1');
 
 async function startApp() {
-  // init db
+  // init prerequested tasks
   const initTasks = [
     initMongoDB(),
-    // getGraphqlSchemaFromFile(path.join(__dirname, './schema.graphql')),
   ];
-  // eslint-disable-next-line no-unused-vars
-  const [_, graphqlSchema] = await Promise.all(initTasks);
+  await Promise.all(initTasks);
 
   // development env test
   console.log('db connnected');
@@ -35,7 +33,7 @@ async function startApp() {
 
   // register router
   app.use('/', normalRoute);
-  // app.use('/graphql', setRouter(graphqlSchema));
+  app.use('/v1', apiV1);
 
   // catch 404 and forward to error handler
   app.use((_req, _res, next) => {
