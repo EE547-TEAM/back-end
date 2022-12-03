@@ -15,7 +15,6 @@ const { rateCreate, getRatesbyUser } = require('../../../../libs/apis/graphql');
 
 const router = express.Router();
 
-<<<<<<< HEAD
 /**
  *
  * @param {string} type
@@ -43,11 +42,9 @@ router.post(RATE, async (req, res) => {
   }
   // todo: check user (both fromUserId and toUserId) is existed, return 403
   const newRate = await rateCreate({
-    score, comment, fromUserId, toUserId, type,
-=======
+    score, comment, fromUserId, toUserId, type,});
+
 router.post(RATE, (req, res) => {
-<<<<<<< HEAD
-<<<<<<< HEAD
   let { score } = req.body;
   const {
     comment, fromUserId, toUserId, rateType,
@@ -66,26 +63,8 @@ router.post(RATE, (req, res) => {
     res.send(400);
   }
   // todo: check user (both fromUserId and toUserId) is existed, return 403
-=======
-// <<<<<<< HEAD
-//   let { score } = req.body;
-//   const {
-//     comment, fromUserId, toUserId, rateType,
-//   } = req.body;
-//   score = Number.parseFloat(score);
-//   if (Number.isNaN(score) || comment === undefined || !fromUserId || !isObjectIdOrHexString(fromUserId) || !toUserId || !isObjectIdOrHexString(toUserId) || (rateType !== 'buyer' && rateType !== 'seller')) {
-//     res.send(400);
-//   }
-//   // todo: check user (both fromUserId and toUserId) is existed, return 403
-// =======
-//   const {
-//     score, comment, fromUserId, toUserId, rateType,
-//   } = req.body;
-// >>>>>>> a60c951 (update address)
->>>>>>> 45a249d (update address)
   rateCreate({
     score, comment, fromUserId, toUserId, rateType,
->>>>>>> 1497886 (address undefined filter)
   });
   res.send(200, JSON.stringify(newRate));
 });
@@ -101,15 +80,17 @@ router.get(GET_RATE_BY_USER, async (req, res) => {
   }));
 });
 
-=======
   const {
-    score, comment, fromUserId, toUserId, rateType,
+    comment, fromUserId, toUserId, rateType,
   } = req.body;
+  score = Number.parseFloat(score);
+  if (Number.isNaN(score) || comment === undefined || !fromUserId || !isObjectIdOrHexString(fromUserId) || !toUserId || !isObjectIdOrHexString(toUserId) || (rateType !== 'buyer' && rateType !== 'seller')) {
+    res.send(400);
+  }
+  // todo: check user (both fromUserId and toUserId) is existed, return 403
   rateCreate({
     score, comment, fromUserId, toUserId, rateType,
   });
   res.send(200);
 });
-
->>>>>>> a60c951 (update address)
 module.exports = router;
