@@ -30,8 +30,8 @@ async function rateCreate({
   const rate = new Rate({
     score,
     comment,
-    rate_from: fromUserId,
-    rate_to: toUserId,
+    rateFromId: fromUserId,
+    rateToId: toUserId,
     Type: rateType,
   });
   const savedDoc = await rate.save();
