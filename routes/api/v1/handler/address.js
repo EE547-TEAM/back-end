@@ -27,6 +27,15 @@ router.post(ADDRESS, (req, res) => {
   });
   res.send(200);
 });
+router.get(ADDRESS, (req, res) => {
+  const {
+    userId,
+  } = req.body;
+  getAddressbyId({
+    userId,
+  });
+  res.send(200);
+});
 
 router.get(ADDRESS, (req, res) => {
   const {
