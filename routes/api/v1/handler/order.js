@@ -11,7 +11,11 @@ router.post(ORDER, (req, res) => {
 })
 
 router.get(ORDER, (req, res) => {
-    
+    // const orderId = req.params;
+    console.log(req);
+    // console.log(req.params);
+    // const order = matchOrderById({ orderId });
+    res.sendStatus(200);
 })
 
 

@@ -40,7 +40,7 @@ async function orderCreate({productionID, quantity, buyerID, sellerID, addressFr
  * @returns {Document}
  */
 async function matchOrderById({ orderId }) {
-  return Order.findOne({ orderId });
+  return Order.findOne({ _id: orderId });
 }
 
 /**
