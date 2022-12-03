@@ -9,6 +9,12 @@ const OrderStatusEnum = {
   default: 'created',
 };
 
+const RateTypeEnum = {
+  type: String,
+  enum: ['buyer', 'seller'],
+  default: 'seller',
+}
+
 const MessageStatusEnum = {
   type: String,
   enum: ['read', 'unread'],
@@ -16,66 +22,61 @@ const MessageStatusEnum = {
 };
 
 const User = new Schema({
-  userId: Schema.Types.ObjectId,
   name: String,
   password: String,
   email: String,
-  buyer_rate: Number,
-  seller_rate: Number,
+  buyerRate: Number,
+  sellerRate: Number,
 }, { timestamps: true });
 
 const Address = new Schema({
-  addressId: Schema.Types.ObjectId,
   content: String,
-  user: User,
+  userId: Schema.Types.ObjectId,
   is_default: Boolean,
 }, { timestamps: true });
 
 const Production = new Schema({
-  productionId: Schema.Types.ObjectId,
-  user: User,
+  userId: Schema.Types.ObjectId,
   price: Number,
   name: String,
   condition: String,
   quantity: Number,
   description: String,
-  publish_time: Number,
-  address: Address,
-  view_time: Number,
+  publishTime: Number,
+  addressId: Schema.Types.ObjectId,
+  viewTime: Number,
 }, { timestamps: true });
 
 const Order = new Schema({
-  orderId: Schema.Types.ObjectId,
-  production: Production,
+  productionId: Schema.Types.ObjectId,
   quantity: Number,
-  buyer: User,
-  seller: User,
+  buyerID: Schema.Types.ObjectId,
+  sellerID: Schema.Types.ObjectId,
   status: OrderStatusEnum,
-  trading_timestamp: Date,
-  reject_timestamp: Date,
-  confirm_timestamp: Date,
-  address_from: Address,
-  address_to_id: Address,
+  tradingTimestamp: Date,
+  rejectTimestamp: Date,
+  confirmTimestamp: Date,
+  // addressId
+  addressFromId: Schema.Types.ObjectId,
+  addressToId: Schema.Types.ObjectId,
 }, { timestamps: true });
 
 const Rate = new Schema({
-  rateId: Schema.Types.ObjectId,
   score: Number,
-  order: Order,
+  orderId: Schema.Types.ObjectId,
   comment: String,
-  rate_from: User,
-  rate_to: User,
+  rateFromId: Schema.Types.ObjectId,
+  rateToId: Schema.Types.ObjectId,
+  Type: RateTypeEnum,
 }, { timestamps: true });
 
 const Chat = new Schema({
-  chatId: Schema.Types.ObjectId,
-  participant: [User],
+  participantId: [Schema.Types.ObjectId],
 }, { timestamps: true });
 
 const Message = new Schema({
-  messageId: Schema.Types.ObjectId,
-  chat: Chat,
-  sender: User,
+  chatId: Schema.Types.ObjectId,
+  senderId: Schema.Types.ObjectId,
   content: String,
   message_timestamp: Date,
   status: MessageStatusEnum,
