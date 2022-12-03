@@ -27,13 +27,13 @@ router.post(RATE, (req, res) => {
   // todo: check user (both fromUserId and toUserId) is existed, return 403
 
   const {
-    score, comment, fromUserId, toUserId, rateType,
+    comment, fromUserId, toUserId, rateType,
   } = req.body;
-
-  const {
-    score, comment, fromUserId, toUserId, rateType,
-  } = req.body;
-
+  score = Number.parseFloat(score);
+  if (Number.isNaN(score) || comment === undefined || !fromUserId || !isObjectIdOrHexString(fromUserId) || !toUserId || !isObjectIdOrHexString(toUserId) || (rateType !== 'buyer' && rateType !== 'seller')) {
+    res.send(400);
+  }
+  // todo: check user (both fromUserId and toUserId) is existed, return 403
   rateCreate({
     score, comment, fromUserId, toUserId, rateType,
   });
