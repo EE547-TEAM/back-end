@@ -8,7 +8,7 @@ const normalRoute = require('./routes/index');
 const { initMongoDB } = require('./libs/db');
 const testMongoose = require('./examples/mongoose');
 const { isDev } = require('./libs/env');
-const { rate: rateRouter, order: orderRouter} = require('./routes/api/v1');
+const { rate: rateRouter, order: orderRouter } = require('./routes/api/v1');
 
 async function startApp() {
   // init prerequested tasks
