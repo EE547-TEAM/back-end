@@ -11,15 +11,43 @@ const { Rate: rateSchema } = require('../../schema');
 // to create rate document for mongoDB, or other operations we need.
 const Rate = model('Rate', rateSchema);
 
+function GetSellerRatesbyUser({ userId }) {
+  // Rate.aggregate([
+  //   {
+  //     $group: {
+
+  //     }
+  //   }
+  // ])
+  return userId;
+}
+
+function GetBuyerRatesbyUser({ userId }) {
+  return userId;
+}
+
 /**
  *
- * @param {*} param0
- * @returns
+ * @param {{
+ *  score: number, comment: string, fromUserId: string, toUserId: string, rateType: boolean
+ * }} param0
+ * @return {null}
  */
-async function findProductbyRate({ email }) {
-  return Rate.find({ email });
+async function rateCreate({
+  score, comment, fromUserId, toUserId, rateType,
+}) {
+  const rate = new Rate({
+    score,
+    comment,
+    rate_from: fromUserId,
+    rate_to: toUserId,
+    rateType,
+  });
+  rate.save();
 }
 
 module.exports = {
-  findProductbyRate,
+  GetBuyerRatesbyUser,
+  GetSellerRatesbyUser,
+  rateCreate,
 };

@@ -13,7 +13,7 @@ const RateTypeEnum = {
   type: String,
   enum: ['buyer', 'seller'],
   default: 'seller',
-}
+};
 
 const MessageStatusEnum = {
   type: String,
@@ -36,7 +36,7 @@ const Address = new Schema({
 }, { timestamps: true });
 
 const Production = new Schema({
-  userId: Schema.Types.ObjectId,
+  user: User,
   price: Number,
   name: String,
   condition: String,
@@ -48,7 +48,7 @@ const Production = new Schema({
 }, { timestamps: true });
 
 const Order = new Schema({
-  productionId: Schema.Types.ObjectId,
+  production: Production,
   quantity: Number,
   buyerID: Schema.Types.ObjectId,
   sellerID: Schema.Types.ObjectId,
@@ -71,12 +71,12 @@ const Rate = new Schema({
 }, { timestamps: true });
 
 const Chat = new Schema({
-  participantId: [Schema.Types.ObjectId],
+  participant: [User],
 }, { timestamps: true });
 
 const Message = new Schema({
-  chatId: Schema.Types.ObjectId,
-  senderId: Schema.Types.ObjectId,
+  chat: Chat,
+  sender: User,
   content: String,
   message_timestamp: Date,
   status: MessageStatusEnum,
