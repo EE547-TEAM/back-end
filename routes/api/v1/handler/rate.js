@@ -47,6 +47,7 @@ router.post(RATE, async (req, res) => {
 =======
 router.post(RATE, (req, res) => {
 <<<<<<< HEAD
+<<<<<<< HEAD
   let { score } = req.body;
   const {
     comment, fromUserId, toUserId, rateType,
@@ -100,4 +101,15 @@ router.get(GET_RATE_BY_USER, async (req, res) => {
   }));
 });
 
+=======
+  const {
+    score, comment, fromUserId, toUserId, rateType,
+  } = req.body;
+  rateCreate({
+    score, comment, fromUserId, toUserId, rateType,
+  });
+  res.send(200);
+});
+
+>>>>>>> a60c951 (update address)
 module.exports = router;
