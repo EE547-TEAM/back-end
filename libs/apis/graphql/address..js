@@ -20,7 +20,7 @@ const Address = model('Address', addressSchema);
  */
 async function getAddressbyId({ userId }) {
   const addresses = await Address.find({ userId: Object(userId) }).exec();
-  return addresses;
+  return (addresses.map((address) => address.content));
 }
 
 /**
