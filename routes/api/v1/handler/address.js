@@ -10,7 +10,7 @@
  */
 const express = require('express');
 const { ADDRESS } = require('../../../../config/API_PATH');
-const { addressCreate } = require('../../../../libs/apis/graphql');
+const { addressCreate, getAddressbyId } = require('../../../../libs/apis/graphql');
 
 const router = express.Router();
 
@@ -20,6 +20,15 @@ router.post(ADDRESS, (req, res) => {
   } = req.body;
   addressCreate({
     content, userId, def,
+  });
+  res.send(200);
+});
+router.get(ADDRESS, (req, res) => {
+  const {
+    userId,
+  } = req.body;
+  getAddressbyId({
+    userId,
   });
   res.send(200);
 });
