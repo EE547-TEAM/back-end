@@ -17,8 +17,8 @@ const Address = model('Address', addressSchema);
  * @returns address
  * userId: Object(userId)
  */
-async function getAddressbyId({ userId }) {
-  const addresses = await Address.find({ userId }).exec();
+async function getAddressbyId({ _Id }) {
+  const addresses = await Address.find({ _Id }).exec();
   return (addresses.map((address) => address.content));
 }
 
