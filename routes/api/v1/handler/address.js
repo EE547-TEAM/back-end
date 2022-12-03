@@ -19,12 +19,20 @@ router.post(ADDRESS, (req, res) => {
   const {
     content, userId, def,
   } = req.body;
+<<<<<<< HEAD
   if (content !== '' || content === undefined || userId !== '' || !isObjectIdOrHexString(userId) || userId === undefined || def === undefined) {
     res.send(400);
   }
   addressCreate({
     content, userId, def,
   });
+=======
+  if (content !== '' || userId !== '') {
+    addressCreate({
+      content, userId, def,
+    });
+  }
+>>>>>>> 552c1d8 (update address)
   res.send(200);
 });
 router.get(ADDRESS, (req, res) => {
