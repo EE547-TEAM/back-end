@@ -11,7 +11,7 @@ const { isDev } = require('./libs/env');
 <<<<<<< HEAD
 const { rate: rateRouter, order: orderRouter } = require('./routes/api/v1');
 =======
-const { rate: rateRouter, address: addressRouter } = require('./routes/api/v1');
+const { rate: rateRouter, address: addressRouter, address: addressRouter } = require('./routes/api/v1');
 >>>>>>> 8c56554 (address update)
 
 async function startApp() {
@@ -37,7 +37,7 @@ async function startApp() {
 
   // register router
   app.use('/', normalRoute);
-  app.use('/v1', rateRouter, orderRouter);
+  app.use('/v1', rateRouter, orderRouter, addressRouter);
 
   // catch 404 and forward to error handler
   app.use((_req, _res, next) => {
