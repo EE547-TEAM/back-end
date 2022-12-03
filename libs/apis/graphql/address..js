@@ -6,7 +6,6 @@
  */
 // eslint-disable-next-line no-unused-vars
 const { model, Document } = require('mongoose');
-const { ObjectId } = require('mongodb');
 const { Address: addressSchema } = require('../../schema');
 
 // to create address document for mongoDB, or other operations we need.
