@@ -31,7 +31,6 @@ router.get(ADDRESS, (req, res) => {
   const {
     userId,
   } = req.body;
-<<<<<<< HEAD
   if (userId !== '' || !isObjectIdOrHexString(userId) || userId === undefined) {
     res.send(400);
   }
@@ -44,8 +43,6 @@ router.get(ADDRESS, (req, res) => {
   const {
     userId,
   } = req.body;
-=======
->>>>>>> 23f919b (address function v1)
   getAddressbyId({
     userId,
   });
