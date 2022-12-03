@@ -2,7 +2,7 @@ const e = require('express');
 const express = require('express');
 const { concatAST } = require('graphql');
 const { PRODUCTION, PRO_USER, PRO_PID, PRO_NAME, PRO_UPDATE } = require('../../../../config/API_PATH');
-const { productCreate, matchProductById, matchProductByUser, matchProductByName, updateProduct, deleteProduct } = require('../../../../libs/apis/graphql');
+const { productCreate, matchProductById, matchProductByUser, matchProductByName, productUpdate, productDelete } = require('../../../../libs/apis/graphql');
 const { route } = require('./order');
 
 const router = express.Router();
@@ -60,13 +60,13 @@ router.put(PRO_UPDATE, async (req, res) => {
     if(addressId != null) params["addressId"] = addressId;
     if(viewTime != null) params["viewTime"] = viewTime;
 
-    updateProduct({ params });
+    productUpdate({ params });
     res.send(200);
 })
 
 router.delete(PRODUCTION, (req, res) => {
     const productionID = req.body.productionID;
-    deleteProduct({ productionID });
+    productDelete({ productionID });
     res.send(200);
 })
 

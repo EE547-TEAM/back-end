@@ -58,7 +58,7 @@ async function matchProductByName({ name }){
  * @param { params: an object of parameters, for example: { productionID: 123455, name: T-shirt } } param
  * @return {null}
  */
-async function updateProduct({ params }){
+async function productUpdate({ params }){
   console.log("match function");
   const filter = { _id: params["productionID"]};
   delete params.productionID;
@@ -73,7 +73,7 @@ async function updateProduct({ params }){
  * @param {productionID: Schema.Types.ObjectId} param
  * @return {nulll}
  */
-async function deleteProduct({ productionID }){
+async function productDelete({ productionID }){
   await Product.findByIdAndDelete({ _id: productionID });
 }
 
@@ -82,6 +82,6 @@ module.exports = {
   matchProductById,
   matchProductByUser,
   matchProductByName,
-  updateProduct,
-  deleteProduct,
+  productUpdate,
+  productDelete,
 };
