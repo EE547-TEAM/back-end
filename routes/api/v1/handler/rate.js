@@ -46,6 +46,7 @@ router.post(RATE, async (req, res) => {
     score, comment, fromUserId, toUserId, type,
 =======
 router.post(RATE, (req, res) => {
+<<<<<<< HEAD
   let { score } = req.body;
   const {
     comment, fromUserId, toUserId, rateType,
@@ -64,6 +65,23 @@ router.post(RATE, (req, res) => {
     res.send(400);
   }
   // todo: check user (both fromUserId and toUserId) is existed, return 403
+=======
+// <<<<<<< HEAD
+//   let { score } = req.body;
+//   const {
+//     comment, fromUserId, toUserId, rateType,
+//   } = req.body;
+//   score = Number.parseFloat(score);
+//   if (Number.isNaN(score) || comment === undefined || !fromUserId || !isObjectIdOrHexString(fromUserId) || !toUserId || !isObjectIdOrHexString(toUserId) || (rateType !== 'buyer' && rateType !== 'seller')) {
+//     res.send(400);
+//   }
+//   // todo: check user (both fromUserId and toUserId) is existed, return 403
+// =======
+//   const {
+//     score, comment, fromUserId, toUserId, rateType,
+//   } = req.body;
+// >>>>>>> a60c951 (update address)
+>>>>>>> 45a249d (update address)
   rateCreate({
     score, comment, fromUserId, toUserId, rateType,
 >>>>>>> 1497886 (address undefined filter)
