@@ -32,7 +32,7 @@ router.get(ADDRESS, (req, res) => {
   const {
     userId,
   } = req.body;
-  if (userId !== '' || !isObjectIdOrHexString(userId) || userId === undefined) {
+  if (userId === '' || !isObjectIdOrHexString(userId) || userId === undefined) {
     res.send(400);
   }
   getAddressbyId({
