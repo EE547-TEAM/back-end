@@ -14,12 +14,29 @@ const Address = model('Address', addressSchema);
 /**
  *
  * @param {*} param0
- * @returns
+ * @returns address
  */
-async function findProductbyAddress({ email }) {
-  return Address.find({ email });
+async function getAddressbyId({ userId }) {
+  const addresses = await Address.find({ userId: Object(userId) }).exec();
+  return addresses;
+}
+
+/**
+ *
+ * @param {userId} param0
+ * @returns save address in userId
+ */
+async function addressCreate({ content, userId, def }) {
+  const address = new Address({
+    content,
+    userId,
+    is_default: def,
+  });
+  const savedDoc = address.save();
+  return savedDoc;
 }
 
 module.exports = {
-  findProductbyAddress,
+  getAddressbyId,
+  addressCreate,
 };
