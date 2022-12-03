@@ -6,8 +6,6 @@ name: Node.js CI
 on:
   push:
     branches: [ "dev" ]
-  pull_request:
-    branches: [ "dev" ]
 
 jobs:
   deploy:
@@ -26,7 +24,10 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm ci
+    - name: clean npm install
+      run: rm -rf ./node_modules
+    - name: install npm packages
+      run: npm ci
     - run: if pm2 delete 'backend'; then               
              echo "stopped";             
            else               
