@@ -32,13 +32,13 @@ router.post(ADDRESS, (req, res) => {
 
 router.get(ADDRESS, (req, res) => {
   const {
-    userId,
+    _Id,
   } = req.body;
-  if (userId === '' || !isObjectIdOrHexString(userId) || userId === undefined) {
+  if (_Id === '' || !isObjectIdOrHexString(_Id) || _Id === undefined) {
     res.send(400);
   }
   getAddressbyId({
-    userId,
+    _Id,
   });
   res.send(200);
 });
