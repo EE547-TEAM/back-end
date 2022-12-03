@@ -25,11 +25,13 @@ router.get('/order/:userId/:status/:isSeller', async (req, res) => {
     const userId = req.params.userId;
     const status = req.params.status;
     const isSeller = req.params.isSeller;
-
-    if(isSeller == true){
+    console.log("seller is:", isSeller);
+    if(isSeller == "true"){
+        console.log("seller");
         const order = await matchOrderBySeller({ userId, status });
         res.send(order);
     }else{
+        console.log("buyer");
         const order = await matchcOrderByBuyer({ userId, status });
         res.send(order);
     }
