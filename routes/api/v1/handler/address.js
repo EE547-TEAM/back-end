@@ -21,7 +21,7 @@ router.post(ADDRESS, (req, res) => {
   const {
     content, userId, def,
   } = req.body;
-  if (content !== '' || content === undefined || userId !== '' || !isObjectIdOrHexString(userId) || userId === undefined || def === undefined) {
+  if (content === '' || content === undefined || userId === '' || !isObjectIdOrHexString(userId) || userId === undefined || def === undefined) {
     res.send(400);
   }
   addressCreate({
@@ -34,7 +34,7 @@ router.get(ADDRESS, (req, res) => {
   const {
     userId,
   } = req.body;
-  if (userId !== '' || !isObjectIdOrHexString(userId) || userId === undefined) {
+  if (userId === '' || !isObjectIdOrHexString(userId) || userId === undefined) {
     res.send(400);
   }
   getAddressbyId({
