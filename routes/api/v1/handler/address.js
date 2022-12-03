@@ -31,6 +31,9 @@ router.get(ADDRESS, (req, res) => {
   const {
     userId,
   } = req.body;
+  if (userId !== '' || !isObjectIdOrHexString(userId) || userId === undefined) {
+    res.send(400);
+  }
   getAddressbyId({
     userId,
   });
@@ -40,6 +43,31 @@ router.get(ADDRESS, (req, res) => {
   const {
     userId,
   } = req.body;
+  getAddressbyId({
+    userId,
+  });
+  res.send(200);
+});
+
+router.get(ADDRESS, (req, res) => {
+  const {
+    _Id,
+  } = req.body;
+  if (_Id === '' || !isObjectIdOrHexString(_Id) || _Id === undefined) {
+    res.send(400);
+  }
+  getAddressbyId({
+    _Id,
+  });
+  res.send(200);
+});
+router.get(ADDRESS, (req, res) => {
+  const {
+    userId,
+  } = req.body;
+  if (userId !== '' || !isObjectIdOrHexString(userId) || userId === undefined) {
+    res.send(400);
+  }
   getAddressbyId({
     userId,
   });
