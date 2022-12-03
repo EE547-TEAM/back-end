@@ -6,6 +6,7 @@
  */
 // eslint-disable-next-line no-unused-vars
 const { model, Document } = require('mongoose');
+const { ObjectId } = require('mongodb');
 const { Address: addressSchema } = require('../../schema');
 
 // to create address document for mongoDB, or other operations we need.
@@ -15,6 +16,7 @@ const Address = model('Address', addressSchema);
  *
  * @param {*} param0
  * @returns address
+ * userId: Object(userId)
  */
 async function getAddressbyId({ userId }) {
   const addresses = await Address.find({ userId: Object(userId) }).exec();
@@ -29,7 +31,7 @@ async function getAddressbyId({ userId }) {
 async function addressCreate({ content, userId, def }) {
   const address = new Address({
     content,
-    userId,
+    userId: ObjectId(userId),
     is_default: def,
   });
   const savedDoc = address.save();
