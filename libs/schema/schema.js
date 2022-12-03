@@ -48,7 +48,7 @@ const Production = new Schema({
 }, { timestamps: true });
 
 const Order = new Schema({
-  production: Production,
+  productionID: Schema.Types.ObjectId,
   quantity: Number,
   buyerID: Schema.Types.ObjectId,
   sellerID: Schema.Types.ObjectId,
