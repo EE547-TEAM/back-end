@@ -41,22 +41,8 @@ router.post(RATE, async (req, res) => {
     return;
   }
   // todo: check user (both fromUserId and toUserId) is existed, return 403
-<<<<<<< HEAD
   const newRate = await rateCreate({
     score, comment, fromUserId, toUserId, type,
-=======
-
-  const {
-    comment, fromUserId, toUserId, rateType,
-  } = req.body;
-  score = Number.parseFloat(score);
-  if (Number.isNaN(score) || comment === undefined || !fromUserId || !isObjectIdOrHexString(fromUserId) || !toUserId || !isObjectIdOrHexString(toUserId) || (rateType !== 'buyer' && rateType !== 'seller')) {
-    res.send(400);
-  }
-  // todo: check user (both fromUserId and toUserId) is existed, return 403
-  rateCreate({
-    score, comment, fromUserId, toUserId, rateType,
->>>>>>> 174a74e (address undefined filter)
   });
   res.send(200, JSON.stringify(newRate));
 });
