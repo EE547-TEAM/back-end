@@ -1,13 +1,4 @@
-const { connect, Schema } = require('mongoose');
-const { mongodb } = require('../config');
-
-function initDB() {
-  const { host, port, db } = mongodb;
-  const connectPath = `mongodb://${host}:${port}/${db}`;
-  console.log(connectPath);
-  // connect to the mongoose.
-  return connect(connectPath);
-}
+const { Schema } = require('mongoose');
 
 /**
  * Enum
@@ -93,16 +84,12 @@ const Message = new Schema({
 /**
  * Exported db and schemas
  */
-const exportModule = {
-  initDB,
-  Schema: {
-    Order,
-    Rate,
-    User,
-    Address,
-    Production,
-    Chat,
-    Message,
-  },
+module.exports = {
+  Order,
+  Rate,
+  User,
+  Address,
+  Production,
+  Chat,
+  Message,
 };
-module.exports = exportModule;
