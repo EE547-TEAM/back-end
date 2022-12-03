@@ -30,7 +30,7 @@ async function getAddressbyId({ _Id }) {
 async function addressCreate({ content, userId, def }) {
   const address = new Address({
     content,
-    userId: ObjectId(userId),
+    userId,
     is_default: def,
   });
   const savedDoc = address.save();
