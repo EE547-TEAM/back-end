@@ -10,25 +10,52 @@
  */
 const express = require('express');
 const { isObjectIdOrHexString } = require('mongoose');
-const { RATE } = require('../../../../config/API_PATH');
-const { rateCreate } = require('../../../../libs/apis/graphql');
+const { RATE, GET_RATE_BY_USER } = require('../../../../config/API_PATH');
+const { rateCreate, getRatesbyUser } = require('../../../../libs/apis/graphql');
 
 const router = express.Router();
 
-router.post(RATE, (req, res) => {
+/**
+ *
+ * @param {string} type
+ * @returns {boolean}
+ */
+function isValidRateType(type) {
+  return (type === 'buyer' || type === 'seller');
+}
+
+router.post(RATE, async (req, res) => {
   let { score } = req.body;
-  const {
-    comment, fromUserId, toUserId, rateType,
-  } = req.body;
   score = Number.parseFloat(score);
-  if (Number.isNaN(score) || comment === undefined || !fromUserId || !isObjectIdOrHexString(fromUserId) || !toUserId || !isObjectIdOrHexString(toUserId) || (rateType !== 'buyer' && rateType !== 'seller')) {
-    res.send(400);
+  const {
+    comment, fromUserId, toUserId, type,
+  } = req.body;
+  if (
+    Number.isNaN(score)
+    || comment === undefined
+    || !isObjectIdOrHexString(fromUserId)
+    || !isObjectIdOrHexString(toUserId)
+    || !isValidRateType(type)
+  ) {
+    res.sendStatus(400);
+    return;
   }
   // todo: check user (both fromUserId and toUserId) is existed, return 403
-  rateCreate({
-    score, comment, fromUserId, toUserId, rateType,
+  const newRate = await rateCreate({
+    score, comment, fromUserId, toUserId, type,
   });
-  res.send(200);
+  res.send(200, JSON.stringify(newRate));
+});
+
+router.get(GET_RATE_BY_USER, async (req, res) => {
+  const { toUserId, type } = req.query;
+  if (!isObjectIdOrHexString(toUserId) || !isValidRateType(type)) {
+    res.sendStatus(400);
+    return;
+  }
+  res.send(200, JSON.stringify({
+    res: await getRatesbyUser({ userId: toUserId, type }),
+  }));
 });
 
 module.exports = router;
