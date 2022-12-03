@@ -27,6 +27,7 @@ router.post(ADDRESS, (req, res) => {
   });
   res.send(200);
 });
+
 router.get(ADDRESS, (req, res) => {
   const {
     userId,
@@ -34,15 +35,6 @@ router.get(ADDRESS, (req, res) => {
   if (userId !== '' || !isObjectIdOrHexString(userId) || userId === undefined) {
     res.send(400);
   }
-  getAddressbyId({
-    userId,
-  });
-  res.send(200);
-});
-router.get(ADDRESS, (req, res) => {
-  const {
-    userId,
-  } = req.body;
   getAddressbyId({
     userId,
   });
