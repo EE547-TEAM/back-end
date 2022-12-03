@@ -5,6 +5,7 @@
  * https://mongoosejs.com/docs/models.html
  */
 // eslint-disable-next-line no-unused-vars
+const { ConditionFilterSensitiveLog } = require('@aws-sdk/client-dynamodb');
 const { model, Document } = require('mongoose');
 const { Order: orderSchema } = require('../../schema');
 
@@ -36,11 +37,12 @@ async function orderCreate({productionID, quantity, buyerID, sellerID, addressFr
 
 
 /**
- * @param {{email: string, pw: string}} params
+ * @param {{_id:  Schema.Types.ObjectId}} params
  * @returns {Document}
  */
 async function matchOrderById({ orderId }) {
-  return Order.findOne({ _id: orderId });
+  const order =  await Order.findOne({ _id: orderId }).exec();
+  return order;
 }
 
 /**
@@ -49,7 +51,10 @@ async function matchOrderById({ orderId }) {
  * @returns {Documents}
  */
 async function matchOrderBySeller({ sellerID, status }) {
-  return Order.find({ sellerID, status });
+  console.log("match function", sellerID);
+  const order = await Order.findOne({ sellerID, status });
+
+  return order;
 }
 
 /**
@@ -57,7 +62,7 @@ async function matchOrderBySeller({ sellerID, status }) {
  * @param {buyerID: Schema.Types.ObjectId, status: String} param0 
  * @returns {Documents}
  */
-async function matchcOrderByBuyer({ buyerId, status}) {
+async function matchcOrderByBuyer({ buyerId, status }) {
   return Order.find({ buyerId, status });
 }
 
