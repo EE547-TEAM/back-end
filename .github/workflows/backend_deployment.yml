@@ -36,4 +36,5 @@ jobs:
     - name: start pm2 service
       env:
         NODE_ENV: ${{ secrets.NODE_ENV }}
-      run: NODE_ENV=$NODE_ENV pm2 start ./bin/www --name 'backend'
+        NODE_PORT: ${{ secrets.TEST_PORT }}
+      run: PORT=$NODE_PORT NODE_ENV=$NODE_ENV pm2 start ./bin/www --name 'backend'
