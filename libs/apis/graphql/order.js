@@ -20,14 +20,15 @@ const Order = model('Order', orderSchema);
  * @returns {}
  */
 async function orderCreate({productionID, quantity, buyerID, sellerID, addressFromId, addressToId}) {
-  const order = new Order({ productionID,
+  console.log(productionID);
+  const order = new Order({   productionID: productionID,
                               quantity,
                               buyerID,
                               sellerID,
                               status: 'created',
-                              // tradingTimestamp: new Date(),
-                              // rejectTimestamp: new Date(),
-                              // confirmTimestamp: new Date(),
+                              tradingTimestamp: null,
+                              rejectTimestamp: null,
+                              confirmTimestamp: null,
                               // addressId
                               addressFromId,
                               addressToId });
@@ -41,43 +42,50 @@ async function orderCreate({productionID, quantity, buyerID, sellerID, addressFr
  * @returns {Document}
  */
 async function matchOrderById({ orderId }) {
+  console.log(orderId);
   const order =  await Order.findOne({ _id: orderId }).exec();
   return order;
 }
 
 /**
  * 
- * @param {sellerID: Schema.Types.ObjectId, status: String} param
+ * @param {userId: Schema.Types.ObjectId, status: String} params
  * @returns {Documents}
  */
-async function matchOrderBySeller({ sellerID, status }) {
-  console.log("match function", sellerID);
-  const order = await Order.findOne({ sellerID, status });
-
-  return order;
+async function matchOrderBySeller({ userId, status }) {
+  return Order.find({ userId, status });
 }
 
 /**
  * 
- * @param {buyerID: Schema.Types.ObjectId, status: String} param0 
+ * @param {userId: Schema.Types.ObjectId, status: String} params
  * @returns {Documents}
  */
-async function matchcOrderByBuyer({ buyerId, status }) {
-  return Order.find({ buyerId, status });
+async function matchcOrderByBuyer({ userId, status }) {
+  return Order.find({ userId, status });
 }
 
+/**
+ * 
+ * @param {orderId: Schema.Types.ObjectId, status: String, modifiedTime: Date} params
+ */
 async function updateOrder({ orderId, status, modifiedTime}) {
-  const order = Order.findOne({ orderId });
-  order.status = status;
+
+  const filter = { _id: orderId };
   switch(status){
-    case 'trading':
-      order.tradingTimestamp = modifiedTime;
+    case "trading":
+      console.log("success trading");
+      const update1 = {status: "trading", tradingTimestamp: modifiedTime};
+      await Order.findOneAndUpdate(filter, update1);
+      // order.tradingTimestamp = modifiedTime;
       break;
-    case 'reject':
-      order.rejectTimestamp = modifiedTime;
+    case "reject":
+      const update2 = {status: "reject", rejectTimestamp: modifiedTime};
+      await Order.findOneAndUpdate(filter, update2);
       break;
-    case 'confirm':
-      order.confirmTimestamp = modifiedTime;
+    case "confirm":
+      const update3 = {status: "confirm", confirmTimestamp: modifiedTime};
+      await Order.findOneAndUpdate(filter, update3);
       break;
   }
 }
