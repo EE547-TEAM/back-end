@@ -11,15 +11,44 @@ const { Rate: rateSchema } = require('../../schema');
 // to create rate document for mongoDB, or other operations we need.
 const Rate = model('Rate', rateSchema);
 
+async function GetRatesbyUser({ userId, type }) {
+  const rates = await Rate.find({ userId: Object(userId), Type: type }).exec();
+  const scoreSum = rates.reduce((pre, rate) => pre + rate.score, 0);
+  return scoreSum / rates.length;
+}
+
 /**
  *
- * @param {*} param0
- * @returns
+ * @param {{
+ *  score: number, comment: string, fromUserId: string, toUserId: string, rateType: boolean
+ * }} param0
+ * @return {null}
  */
-async function findProductbyRate({ email }) {
-  return Rate.find({ email });
+async function rateCreate({
+  score, comment, fromUserId, toUserId, rateType,
+}) {
+  const rate = new Rate({
+    score,
+    comment,
+    rate_from: fromUserId,
+    rate_to: toUserId,
+    Type: rateType,
+  });
+  const savedDoc = await rate.save();
+  return savedDoc;
+}
+
+/**
+ * update user's rate
+ * @param {{ userId: string, type: 'buyer' | 'seller', score: number }} param0
+ * @returns { Document }
+ */
+async function userRateUpdate({ userId, type, score }) {
+  return Rate.updateOne({ rateToId: userId, Type: type }, { $set: { score } }).exec();
 }
 
 module.exports = {
-  findProductbyRate,
+  GetRatesbyUser,
+  rateCreate,
+  userRateUpdate,
 };
