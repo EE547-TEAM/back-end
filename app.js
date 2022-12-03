@@ -8,7 +8,7 @@ const normalRoute = require('./routes/index');
 const { initMongoDB } = require('./libs/db');
 const testMongoose = require('./examples/mongoose');
 const { isDev } = require('./libs/env');
-const apiV1 = require('./routes/api/v1');
+const { rate: rateRouter } = require('./routes/api/v1');
 
 async function startApp() {
   // init prerequested tasks
@@ -33,7 +33,7 @@ async function startApp() {
 
   // register router
   app.use('/', normalRoute);
-  app.use('/v1', apiV1);
+  app.use('/v1', rateRouter);
 
   // catch 404 and forward to error handler
   app.use((_req, _res, next) => {
