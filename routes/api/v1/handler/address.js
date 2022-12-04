@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 /**
  * Define API handler implement here, general workflow:
  *  - register api
@@ -44,4 +42,3 @@ router.get(ADDRESS, (req, res) => {
 });
 
 module.exports = router;
->>>>>>> 6c03994 (address function v1)
