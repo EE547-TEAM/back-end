@@ -38,7 +38,9 @@ router.get(CHAT, (req, res) => {
   const {
     participantId,
   } = req.body;
-
+  if (participantId === '' || !isObjectIdOrHexString(participantId) || participantId === undefined) {
+    res.sendStatus(400);
+  }
   getChatsbyUserId({ userId: participantId });
   res.send(200);
 });
