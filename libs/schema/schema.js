@@ -75,8 +75,8 @@ const Chat = new Schema({
 }, { timestamps: true });
 
 const Message = new Schema({
-  chat: Chat,
-  sender: User,
+  chatId: Schema.Types.ObjectId,
+  senderId: Schema.Types.ObjectId,
   content: String,
   message_timestamp: Date,
   status: MessageStatusEnum,
