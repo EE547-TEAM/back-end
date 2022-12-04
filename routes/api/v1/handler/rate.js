@@ -15,7 +15,6 @@ const { rateCreate, getRatesbyUser } = require('../../../../libs/apis/graphql');
 
 const router = express.Router();
 
-<<<<<<< HEAD
 /**
  *
  * @param {string} type
@@ -44,20 +43,6 @@ router.post(RATE, async (req, res) => {
   // todo: check user (both fromUserId and toUserId) is existed, return 403
   const newRate = await rateCreate({
     score, comment, fromUserId, toUserId, type,
-=======
-router.post(RATE, (req, res) => {
-  let { score } = req.body;
-  const {
-    comment, fromUserId, toUserId, rateType,
-  } = req.body;
-  score = Number.parseFloat(score);
-  if (Number.isNaN(score) || comment === undefined || !fromUserId || !isObjectIdOrHexString(fromUserId) || !toUserId || !isObjectIdOrHexString(toUserId) || (rateType !== 'buyer' && rateType !== 'seller')) {
-    res.send(400);
-  }
-  // todo: check user (both fromUserId and toUserId) is existed, return 403
-  rateCreate({
-    score, comment, fromUserId, toUserId, rateType,
->>>>>>> 1497886 (address undefined filter)
   });
   res.send(200, JSON.stringify(newRate));
 });
