@@ -9,7 +9,8 @@ const { initMongoDB } = require('./libs/db');
 const testMongoose = require('./examples/mongoose');
 const { isDev } = require('./libs/env');
 const {
-  rate: rateRouter, order: orderRouter, product: productionRouter, message: messageRouter,
+  rate: rateRouter, order: orderRouter, product: productionRouter,
+  message: messageRouter, user: userRouter,
 } = require('./routes/api/v1');
 
 async function startApp() {
@@ -35,7 +36,7 @@ async function startApp() {
 
   // register router
   app.use('/', normalRoute);
-  app.use('/v1', rateRouter, orderRouter, productionRouter, messageRouter);
+  app.use('/v1', rateRouter, orderRouter, productionRouter, messageRouter, userRouter);
 
   // catch 404 and forward to error handler
   app.use((_req, _res, next) => {
