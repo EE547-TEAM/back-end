@@ -15,4 +15,8 @@ module.exports = {
   MESSAGE: '/message',
   MESSAGE_LAST: '/message/last',
   MESSAGE_STATUS: '/message/status',
+  USER: '/user',
+  USER_ID: '/user/:userId',
+  USER_EMAIL: '/user/:email/:password',
+  USER_PROFILE: '/user/profile',
 };
