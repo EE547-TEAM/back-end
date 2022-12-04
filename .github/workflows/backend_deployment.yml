@@ -35,7 +35,7 @@ jobs:
            fi
     - name: start pm2 service
       shell: bash
-      env:
-        NODE_ENV: ${{ secrets.NODE_ENV }}
-        PORT: ${{ secrets.TEST_PORT }}
-      run: pm2 start ./bin/www --name 'backend'
+      # env:
+      #   NODE_ENV: ${{ secrets.NODE_ENV }}
+      #   PORT: ${{ secrets.TEST_PORT }}
+      run: PORT=${{ secrets.TEST_PORT }} NODE_ENV=${{ secrets.NODE_ENV }} pm2 start ./bin/www --name 'backend'
