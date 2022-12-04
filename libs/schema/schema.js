@@ -71,7 +71,7 @@ const Rate = new Schema({
 }, { timestamps: true });
 
 const Chat = new Schema({
-  participant: [User],
+  participant: [Schema.Types.ObjectId],
 }, { timestamps: true });
 
 const Message = new Schema({
