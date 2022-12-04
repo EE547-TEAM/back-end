@@ -4,8 +4,8 @@
  * or visit
  * https://mongoosejs.com/docs/models.html
  */
-// eslint-disable-next-line no-unused-vars
-const { model, Document, Schema } = require('mongoose');
+
+const { model } = require('mongoose');
 const { Production: productSchema } = require('../../schema');
 
 // to create user document for mongoDB, or other operations we need.

@@ -4,8 +4,7 @@
  * or visit
  * https://mongoosejs.com/docs/models.html
  */
-// eslint-disable-next-line no-unused-vars
-const { ConditionFilterSensitiveLog } = require('@aws-sdk/client-dynamodb');
+
 const { model } = require('mongoose');
 const { Order: orderSchema } = require('../../schema');
 
@@ -22,7 +21,6 @@ const Order = model('Order', orderSchema);
 async function orderCreate({
   productionID, quantity, buyerID, sellerID, addressFromId, addressToId,
 }) {
-  console.log(productionID);
   const order = new Order({
     productionID,
     quantity,
@@ -45,7 +43,6 @@ async function orderCreate({
  * @returns {Document}
  */
 async function matchOrderById({ orderId }) {
-  console.log(orderId);
   const order = await Order.findOne({ _id: orderId }).exec();
   return order;
 }
@@ -65,8 +62,6 @@ async function matchOrderBySeller({ userId, status }) {
  * @returns {Documents}
  */
 async function matchcOrderByBuyer({ userId, status }) {
-  console.log(userId);
-  console.log(status);
   return Order.find({ buyerID: userId, status });
 }
 
@@ -77,7 +72,6 @@ async function matchcOrderByBuyer({ userId, status }) {
  */
 async function updateOrder({ orderId, status, modifiedTime }) {
   const filter = { _id: orderId };
-  console.log('function');
   switch (status) {
     case 'trading': {
       const update1 = { status: 'trading', tradingTimestamp: modifiedTime };
