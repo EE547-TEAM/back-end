@@ -9,7 +9,6 @@ const http = require('http');
 const startApp = require('../app');
 
 console.log(process.env.PORT);
-console.log(process.env.ENV);
 
 startApp()
   .then((app) => {
