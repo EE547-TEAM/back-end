@@ -16,10 +16,10 @@ const { rateCreate, getRatesbyUser } = require('../../../../libs/apis/graphql');
 const router = express.Router();
 
 /**
- *
- * @param {string} type
- * @returns {boolean}
- */
+  *
+  * @param {string} type
+  * @returns {boolean}
+  */
 function isValidRateType(type) {
   return (type === 'buyer' || type === 'seller');
 }
@@ -32,39 +32,17 @@ router.post(RATE, async (req, res) => {
   } = req.body;
   if (
     Number.isNaN(score)
-    || comment === undefined
-    || !isObjectIdOrHexString(fromUserId)
-    || !isObjectIdOrHexString(toUserId)
-    || !isValidRateType(type)
+     || comment === undefined
+     || !isObjectIdOrHexString(fromUserId)
+     || !isObjectIdOrHexString(toUserId)
+     || !isValidRateType(type)
   ) {
     res.sendStatus(400);
     return;
   }
   // todo: check user (both fromUserId and toUserId) is existed, return 403
   const newRate = await rateCreate({
-    score, comment, fromUserId, toUserId, type,});
-
-router.post(RATE, (req, res) => {
-  let { score } = req.body;
-  const {
-    comment, fromUserId, toUserId, rateType,
-  } = req.body;
-  score = Number.parseFloat(score);
-  if (Number.isNaN(score) || comment === undefined || !fromUserId || !isObjectIdOrHexString(fromUserId) || !toUserId || !isObjectIdOrHexString(toUserId) || (rateType !== 'buyer' && rateType !== 'seller')) {
-    res.send(400);
-  }
-  // todo: check user (both fromUserId and toUserId) is existed, return 403
-
-  const {
-    comment, fromUserId, toUserId, rateType,
-  } = req.body;
-  score = Number.parseFloat(score);
-  if (Number.isNaN(score) || comment === undefined || !fromUserId || !isObjectIdOrHexString(fromUserId) || !toUserId || !isObjectIdOrHexString(toUserId) || (rateType !== 'buyer' && rateType !== 'seller')) {
-    res.send(400);
-  }
-  // todo: check user (both fromUserId and toUserId) is existed, return 403
-  rateCreate({
-    score, comment, fromUserId, toUserId, rateType,
+    score, comment, fromUserId, toUserId, type,
   });
   res.send(200, JSON.stringify(newRate));
 });
@@ -80,17 +58,4 @@ router.get(GET_RATE_BY_USER, async (req, res) => {
   }));
 });
 
-  const {
-    comment, fromUserId, toUserId, rateType,
-  } = req.body;
-  score = Number.parseFloat(score);
-  if (Number.isNaN(score) || comment === undefined || !fromUserId || !isObjectIdOrHexString(fromUserId) || !toUserId || !isObjectIdOrHexString(toUserId) || (rateType !== 'buyer' && rateType !== 'seller')) {
-    res.send(400);
-  }
-  // todo: check user (both fromUserId and toUserId) is existed, return 403
-  rateCreate({
-    score, comment, fromUserId, toUserId, rateType,
-  });
-  res.send(200);
-});
 module.exports = router;
