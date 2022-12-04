@@ -20,4 +20,5 @@ module.exports = {
   USER_EMAIL: '/user/:email/:password',
   USER_PROFILE: '/user/profile',
   ADDRESS: '/address',
+  CHAT: '/chat',
 };

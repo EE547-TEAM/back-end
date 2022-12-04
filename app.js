@@ -7,10 +7,8 @@ const logger = require('morgan');
 const normalRoute = require('./routes/index');
 const { initMongoDB } = require('./libs/mongo');
 const testMongoose = require('./examples/mongoose');
-const { isDev } = require('./config/env');
-
-const graphqlHTTP = require('./routes/graphql');
-const { getGrqphqlSchema } = require('./libs/graphql');
+const { isDev } = require('./libs/env');
+const { rate: rateRouter, address: addressRouter, chat: chatRouter } = require('./routes/api/v1');
 
 async function startApp() {
   // init prerequested tasks
@@ -36,7 +34,7 @@ async function startApp() {
 
   // register router
   app.use('/', normalRoute);
-  app.use('/graphql', graphqlHTTP(initRes[1]));
+  app.use('/v1', rateRouter, addressRouter, chatRouter);
 
   // catch 404 and forward to error handler
   app.use((_req, _res, next) => {
