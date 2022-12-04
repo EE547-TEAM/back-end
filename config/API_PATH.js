@@ -6,6 +6,7 @@ module.exports = {
   ORDER: '/order',
   ORDER_ID: '/order/:orderId',
   ORDER_USER: '/order/:userId/:status/:isSeller',
+  ORDER_STATUS: '/order/status',
   PRODUCTION: '/production',
   PRO_PID: '/production/pid/:productionID',
   PRO_USER: '/production/user/:userId',
