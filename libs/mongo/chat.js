@@ -21,8 +21,8 @@ async function chatCreate({ participantId }) {
 
 /**
  *
- * @param {*} param0
- * @returns
+ * @param {userId} param0 get all chat participant matches id
+ * @returns chat
  */
 async function getChatsbyUserId({ userId }) {
   const chats = await Chat.where('participant').elemMatch({ $eq: userId }).exec();
@@ -30,12 +30,13 @@ async function getChatsbyUserId({ userId }) {
   return (chats);
 }
 
-async function GetChatbyUser({ email }) {
+async function getChatbyUser({ email }) {
+  // Todo: use getUserbyEmail then call getChatsbyUseId
   return Chat.find({ email });
 }
 
 module.exports = {
   chatCreate,
   getChatsbyUserId,
-  GetChatbyUser,
+  getChatbyUser,
 };
