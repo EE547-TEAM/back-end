@@ -12,4 +12,7 @@ module.exports = {
   PRO_USER: '/production/user/:userId',
   PRO_NAME: '/production/name/:name',
   PRO_UPDATE: '/production/update',
+  MESSAGE: '/message',
+  MESSAGE_LAST: '/message/last',
+  MESSAGE_STATUS: '/message/status',
 };
