@@ -36,13 +36,13 @@ const Address = new Schema({
 }, { timestamps: true });
 
 const Production = new Schema({
-  user: User,
+  userId: Schema.Types.ObjectId,
   price: Number,
   name: String,
   condition: String,
   quantity: Number,
   description: String,
-  publishTime: Number,
+  publishTime: Date,
   addressId: Schema.Types.ObjectId,
   viewTime: Number,
 }, { timestamps: true });
