@@ -34,6 +34,8 @@ jobs:
              echo "set up";           
            fi
     - name: start pm2 service
-      env:
-        NODE_ENV: ${{ secrets.NODE_ENV }}
-      run: NODE_ENV=$NODE_ENV pm2 start ./bin/www --name 'backend'
+      shell: bash
+      # env:
+      #   NODE_ENV: ${{ secrets.NODE_ENV }}
+      #   PORT: ${{ secrets.TEST_PORT }}
+      run: PORT=${{ secrets.TEST_PORT }} NODE_ENV=${{ secrets.NODE_ENV }} pm2 start ./bin/www --name 'backend'
