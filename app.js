@@ -9,10 +9,14 @@ const { initMongoDB } = require('./libs/db');
 const testMongoose = require('./examples/mongoose');
 const { isDev } = require('./libs/env');
 <<<<<<< HEAD
+<<<<<<< HEAD
 const { rate: rateRouter, order: orderRouter } = require('./routes/api/v1');
 =======
 const { rate: rateRouter, address: addressRouter } = require('./routes/api/v1');
 >>>>>>> 8c56554 (address update)
+=======
+const { rate: rateRouter, address: addressRouter } = require('./routes/api/v1');
+>>>>>>> 1c5e8b674962facf6cba64777e6570ee3619a070
 
 async function startApp() {
   // init prerequested tasks

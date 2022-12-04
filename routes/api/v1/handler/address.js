@@ -40,6 +40,7 @@ router.get(ADDRESS, (req, res) => {
   });
   res.send(200);
 });
+<<<<<<< HEAD
 router.get(ADDRESS, (req, res) => {
   const {
     userId,
@@ -52,5 +53,7 @@ router.get(ADDRESS, (req, res) => {
   });
   res.send(200);
 });
+=======
+>>>>>>> 1c5e8b674962facf6cba64777e6570ee3619a070
 
 module.exports = router;
