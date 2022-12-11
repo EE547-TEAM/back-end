@@ -11,12 +11,30 @@ const { Address } = require('./model');
 /**
  *
  * @param {*} param0
- * @returns
+ * @returns address
+ * userId: Object(userId)
  */
-async function findProductbyAddress({ email }) {
-  return Address.find({ email });
+async function getAddressbyId({ _Id }) {
+  const addresses = await Address.find({ _Id }).exec();
+  return (addresses.map((address) => address.content));
+}
+
+/**
+ *
+ * @param {userId} param0
+ * @returns save address in userId
+ */
+async function addressCreate({ content, userId, def }) {
+  const address = new Address({
+    content,
+    userId,
+    is_default: def,
+  });
+  const savedDoc = address.save();
+  return savedDoc;
 }
 
 module.exports = {
-  findProductbyAddress,
+  getAddressbyId,
+  addressCreate,
 };
