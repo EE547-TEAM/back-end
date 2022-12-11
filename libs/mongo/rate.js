@@ -6,10 +6,7 @@
  */
 // eslint-disable-next-line no-unused-vars
 const { model, Document } = require('mongoose');
-const { Rate: rateSchema } = require('../../schema');
-
-// to create rate document for mongoDB, or other operations we need.
-const Rate = model('Rate', rateSchema);
+const { Rate } = require('./model');
 
 async function getRatesbyUser({ userId, type }) {
   const rates = await Rate.find({ userId: Object(userId), Type: type }).exec();

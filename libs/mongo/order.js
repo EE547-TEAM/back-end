@@ -5,11 +5,7 @@
  * https://mongoosejs.com/docs/models.html
  */
 
-const { model } = require('mongoose');
-const { Order: orderSchema } = require('../../schema');
-
-// to create user document for mongoDB, or other operations we need.
-const Order = model('Order', orderSchema);
+const { Order } = require('./model');
 
 /**
  *
