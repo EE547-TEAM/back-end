@@ -1,9 +1,14 @@
-var express = require('express');
-var router = express.Router();
+/**
+ * all of route in this file have the same base url '/';
+ */
+const express = require('express');
+const { ping } = require('../libs/apis/normal');
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
+const router = express.Router();
+
+/**
+ * register router as //ping -> /ping
+ */
+router.get('/ping', ping);
 
 module.exports = router;
