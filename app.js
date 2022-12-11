@@ -8,7 +8,10 @@ const normalRoute = require('./routes/index');
 const { initMongoDB } = require('./libs/db');
 const testMongoose = require('./examples/mongoose');
 const { isDev } = require('./libs/env');
-const { rate: rateRouter, address: addressRouter } = require('./routes/api/v1');
+const {
+  rate: rateRouter, order: orderRouter, product: productionRouter,
+  message: messageRouter, user: userRouter, address: addressRouter,
+} = require('./routes/api/v1');
 
 async function startApp() {
   // init prerequested tasks
@@ -33,7 +36,7 @@ async function startApp() {
 
   // register router
   app.use('/', normalRoute);
-  app.use('/v1', rateRouter, addressRouter);
+  app.use('/v1', rateRouter, orderRouter, productionRouter, messageRouter, userRouter, addressRouter);
 
   // catch 404 and forward to error handler
   app.use((_req, _res, next) => {

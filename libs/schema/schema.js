@@ -36,13 +36,13 @@ const Address = new Schema({
 }, { timestamps: true });
 
 const Production = new Schema({
-  user: User,
+  userId: Schema.Types.ObjectId,
   price: Number,
   name: String,
   condition: String,
   quantity: Number,
   description: String,
-  publishTime: Number,
+  publishTime: Date,
   addressId: Schema.Types.ObjectId,
   viewTime: Number,
 }, { timestamps: true });
@@ -75,8 +75,8 @@ const Chat = new Schema({
 }, { timestamps: true });
 
 const Message = new Schema({
-  chat: Chat,
-  sender: User,
+  chatId: Schema.Types.ObjectId,
+  senderId: Schema.Types.ObjectId,
   content: String,
   message_timestamp: Date,
   status: MessageStatusEnum,
