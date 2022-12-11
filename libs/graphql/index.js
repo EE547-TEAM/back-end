@@ -1,5 +1,7 @@
-const schema = require('./schema');
+const getGrqphqlSchema = require('./schema');
+const root = require('./root');
 
 module.exports = {
-  schema,
+  root,
+  getGrqphqlSchema,
 };

@@ -5,12 +5,12 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
 const normalRoute = require('./routes/index');
-const { initMongoDB } = require('./libs/db');
+const { initMongoDB } = require('./libs/mongo');
 const testMongoose = require('./examples/mongoose');
-const { isDev } = require('./libs/env');
+const { isDev } = require('./config/env');
 
-const graphqlHTTP = require('./routes/api/v1');
-const getGrqphqlSchema = require('./libs/graphql/schema');
+const graphqlHTTP = require('./routes/graphql');
+const { getGrqphqlSchema } = require('./libs/graphql');
 
 async function startApp() {
   // init prerequested tasks

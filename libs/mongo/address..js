@@ -5,11 +5,8 @@
  * https://mongoosejs.com/docs/models.html
  */
 // eslint-disable-next-line no-unused-vars
-const { model, Document } = require('mongoose');
-const { Address: addressSchema } = require('../../schema');
-
-// to create address document for mongoDB, or other operations we need.
-const Address = model('Address', addressSchema);
+const { Document } = require('mongoose');
+const { Address } = require('./model');
 
 /**
  *
