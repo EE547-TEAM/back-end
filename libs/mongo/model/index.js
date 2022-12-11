@@ -1,6 +1,6 @@
 const { model } = require('mongoose');
 const {
-  Order, Rate, User, Address, Production, Chat, Message,
+  Order, Rate, User, Authority, Address, Production, Chat, Message,
 } = require('./schema');
 
 module.exports = {
@@ -8,6 +8,7 @@ module.exports = {
   Rate: model('Rate', Rate),
   Order: model('Order', Order),
   User: model('User', User),
+  Authority: model('Authority', Authority),
   Address: model('Address', Address),
   Production: model('Production', Production),
   Message: model('Message', Message),

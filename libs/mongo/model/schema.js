@@ -29,6 +29,11 @@ const User = new Schema({
   sellerRate: { type: Number, default: 0 },
 }, { timestamps: true });
 
+const Authority = new Schema({
+  userId: { type: Schema.Types.ObjectId, require: true },
+  password: { require: true, type: String },
+}, { timestamps: true });
+
 const Address = new Schema({
   content: String,
   userId: Schema.Types.ObjectId,
@@ -89,6 +94,7 @@ module.exports = {
   Order,
   Rate,
   User,
+  Authority,
   Address,
   Production,
   Chat,
