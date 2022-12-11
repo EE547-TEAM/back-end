@@ -23,10 +23,14 @@ const MessageStatusEnum = {
 
 const User = new Schema({
   name: String,
-  password: String,
   email: String,
   buyerRate: { type: Number, default: 0 },
   sellerRate: { type: Number, default: 0 },
+}, { timestamps: true });
+
+const Authority = new Schema({
+  userId: { type: Schema.Types.ObjectId, require: true },
+  password: { require: true, type: String },
 }, { timestamps: true });
 
 const Address = new Schema({
@@ -89,6 +93,7 @@ module.exports = {
   Order,
   Rate,
   User,
+  Authority,
   Address,
   Production,
   Chat,
