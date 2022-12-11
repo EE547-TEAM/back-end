@@ -23,7 +23,6 @@ const MessageStatusEnum = {
 
 const User = new Schema({
   name: String,
-  password: String,
   email: String,
   buyerRate: { type: Number, default: 0 },
   sellerRate: { type: Number, default: 0 },
