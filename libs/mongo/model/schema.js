@@ -25,8 +25,8 @@ const User = new Schema({
   name: String,
   password: String,
   email: String,
-  buyerRate: Number,
-  sellerRate: Number,
+  buyerRate: { type: Number, default: 0 },
+  sellerRate: { type: Number, default: 0 },
 }, { timestamps: true });
 
 const Address = new Schema({
@@ -37,19 +37,19 @@ const Address = new Schema({
 
 const Production = new Schema({
   userId: Schema.Types.ObjectId,
-  price: Number,
+  price: { type: Number, default: 0 },
   name: String,
   condition: String,
-  quantity: Number,
+  quantity: { type: Number, default: 1 },
   description: String,
   publishTime: Date,
   addressId: Schema.Types.ObjectId,
-  viewTime: Number,
+  viewTime: { type: Number, default: 0 },
 }, { timestamps: true });
 
 const Order = new Schema({
   productionID: Schema.Types.ObjectId,
-  quantity: Number,
+  quantity: { type: Number, default: 1 },
   buyerID: Schema.Types.ObjectId,
   sellerID: Schema.Types.ObjectId,
   status: OrderStatusEnum,
@@ -62,9 +62,9 @@ const Order = new Schema({
 }, { timestamps: true });
 
 const Rate = new Schema({
-  score: Number,
+  score: { type: Number, default: 5 },
   orderId: Schema.Types.ObjectId,
-  comment: String,
+  comment: { type: String, default: null },
   rateFromId: Schema.Types.ObjectId,
   rateToId: Schema.Types.ObjectId,
   Type: RateTypeEnum,
