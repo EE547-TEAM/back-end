@@ -6,10 +6,7 @@
  */
 // eslint-disable-next-line no-unused-vars
 const { model, Document } = require('mongoose');
-const { User: userSchema } = require('../../schema');
-
-// to create user document for mongoDB, or other operations we need.
-const User = model('User', userSchema);
+const { User } = require('./model');
 
 /**
  *

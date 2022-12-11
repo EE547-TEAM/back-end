@@ -5,11 +5,8 @@
  * https://mongoosejs.com/docs/models.html
  */
 // eslint-disable-next-line no-unused-vars
-const { model, Document } = require('mongoose');
-const { Message: messageSchema } = require('../../schema');
-
-// to create message document for mongoDB, or other operations we need.
-const Message = model('Message', messageSchema);
+const { Document } = require('mongoose');
+const { Message } = require('./model');
 
 /**
  *

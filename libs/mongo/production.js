@@ -1,15 +1,11 @@
 /**
- * Define Product API implement here
+ * Define Production API implement here
  * see any details about model, check the example under /examples/mongoose.js
  * or visit
  * https://mongoosejs.com/docs/models.html
  */
 
-const { model } = require('mongoose');
-const { Production: productSchema } = require('../../schema');
-
-// to create user document for mongoDB, or other operations we need.
-const Product = model('Product', productSchema);
+const { Production } = require('./model');
 
 /**
  *
@@ -21,7 +17,7 @@ const Product = model('Product', productSchema);
 async function productCreate({
   userId, price, name, condition, quantity, description, publishTime, addressId,
 }) {
-  const product = new Product({
+  const product = new Production({
     userId, price, name, condition, quantity, description, publishTime, addressId, viewTime: 0,
   });
   const productdoc = await product.save();
@@ -35,7 +31,7 @@ async function productCreate({
  * @returns { Document }
  */
 async function matchProductById({ productionID }) {
-  return Product.findOne({ _id: productionID }).exec();
+  return Production.findOne({ _id: productionID }).exec();
 }
 
 /**
@@ -44,7 +40,7 @@ async function matchProductById({ productionID }) {
  * @returns { Document }
  */
 async function matchProductByUser({ userId }) {
-  return Product.find({ userId }).exec();
+  return Production.find({ userId }).exec();
 }
 
 /**
@@ -53,7 +49,7 @@ async function matchProductByUser({ userId }) {
  * @returns { Document }
  */
 async function matchProductByName({ name }) {
-  return Product.find({ name }).exec();
+  return Production.find({ name }).exec();
 }
 
 /**
@@ -66,7 +62,7 @@ async function productUpdate({ params }) {
   const param = params;
   const filter = { _id: param.productionID };
   delete param.productionID;
-  return Product.findOneAndUpdate(filter, param).exec();
+  return Production.findOneAndUpdate(filter, param).exec();
 }
 
 /**
@@ -75,7 +71,7 @@ async function productUpdate({ params }) {
  * @return { Promise<*> }
  */
 async function productDelete({ productionID }) {
-  return Product.findByIdAndDelete({ _id: productionID }).exec();
+  return Production.findByIdAndDelete({ _id: productionID }).exec();
 }
 
 module.exports = {

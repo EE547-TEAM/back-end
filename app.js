@@ -5,20 +5,20 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
 const normalRoute = require('./routes/index');
-const { initMongoDB } = require('./libs/db');
+const { initMongoDB } = require('./libs/mongo');
 const testMongoose = require('./examples/mongoose');
-const { isDev } = require('./libs/env');
-const {
-  rate: rateRouter, order: orderRouter, product: productionRouter,
-  message: messageRouter, user: userRouter, address: addressRouter,
-} = require('./routes/api/v1');
+const { isDev } = require('./config/env');
+
+const graphqlHTTP = require('./routes/graphql');
+const { getGrqphqlSchema } = require('./libs/graphql');
 
 async function startApp() {
   // init prerequested tasks
   const initTasks = [
     initMongoDB(),
+    getGrqphqlSchema(),
   ];
-  await Promise.all(initTasks);
+  const initRes = await Promise.all(initTasks);
 
   // development env test
   console.log('db connnected');
@@ -36,7 +36,7 @@ async function startApp() {
 
   // register router
   app.use('/', normalRoute);
-  app.use('/v1', rateRouter, orderRouter, productionRouter, messageRouter, userRouter, addressRouter);
+  app.use('/graphql', graphqlHTTP(initRes[1]));
 
   // catch 404 and forward to error handler
   app.use((_req, _res, next) => {
