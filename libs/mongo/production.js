@@ -31,8 +31,11 @@ async function productCreate({
  * @returns { Document }
  */
 async function matchProductById({ productionID }) {
-  const product = await Production.findOne({ _id: productionID }).exec();
-  return product;
+  console.log('yes?', productionID);
+  // const product = await Production.findOne({ _id: productionID }).exec();
+  // const product = await Production.find().exec();
+  // console.log(product);
+  return Production.find({ price: 80 }).exec();
 }
 
 /**
