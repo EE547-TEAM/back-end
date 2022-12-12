@@ -68,6 +68,10 @@ async function userRateUpdate({ userId, type }) {
   return User.updateOne({ rateToId: userId, Type: type }, { $set: { score } }).exec();
 }
 
+// async function isUserExisted(params) {
+
+// }
+
 module.exports = {
   userCreate,
   matchUserById,
