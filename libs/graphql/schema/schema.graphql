@@ -92,7 +92,6 @@ input InputProduction {
     condition: String 
     quantity: Int 
     description: String
-    publishTime: DateTime 
     addressId: ID
 }
 
@@ -147,7 +146,6 @@ type Production {
     condition: String
     quantity: Int!
     description: String
-    publishTime: DateTime
     addressId: ID
     viewTime: Int
 }
@@ -186,7 +184,6 @@ type Message {
     chatId: ID,
     senderId: ID,
     content: String,
-    message_timestamp: DateTime,
     status: MessageStatusEnum, 
 }
 

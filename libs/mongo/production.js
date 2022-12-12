@@ -15,10 +15,10 @@ const { Production } = require('./model');
  * @returns { Promise<*> }
  */
 async function productCreate({
-  userId, price, name, condition, quantity, description, publishTime, addressId,
+  userId, price, name, condition, quantity, description, addressId,
 }) {
   const product = new Production({
-    userId, price, name, condition, quantity, description, publishTime, addressId, viewTime: 0,
+    userId, price, name, condition, quantity, description, addressId, viewTime: 0,
   });
   const productdoc = await product.save();
   return productdoc;
