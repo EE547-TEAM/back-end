@@ -66,8 +66,6 @@ type Mutation {
     orderTradingToReject(oid: ID): Order
 
     productionViewTimeincrement(pid: ID): Production
-    
-    orderUpdate(oid: ID, status: OrderStatusEnum, modifiedTime: DateTime): Order
     messageUpdate(mid: ID): Message
 }
 
@@ -116,8 +114,8 @@ input InputOrder {
 input InputMessage {
     chatId: ID
     senderId: ID
-    content: String 
-    status: OrderStatusEnum
+    content: String!
+    # status: OrderStatusEnum
 }
 
 input InputAddress {
