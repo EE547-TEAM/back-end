@@ -29,8 +29,8 @@ type Query {
     rateByUser(uid: ID, type: RateTypeEnum): Float
 
     productionById(pid: ID): Production
-    productionByUser(uid: ID): [Production]
-    productionByName(name: String): [Production]
+    productionByUser(uid: ID, activate: Boolean): [Production]
+    productionByName(name: String, activate: Boolean): [Production]
 
     orderById(oid: ID): Order
     orderBySeller(uid: ID, status: OrderStatusEnum): Order
@@ -59,6 +59,8 @@ type Mutation {
     userRateUpdate(uid: ID, type: RateTypeEnum): User
     productionUpdate(pid: ID, data: InputProductUpdate): Production
     productionDelete(pid: ID): Production
+    productionViewTimeincrement(pid: ID): Production
+    
     orderUpdate(oid: ID, status: OrderStatusEnum, modifiedTime: DateTime): Order
     messageUpdate(mid: ID): Message
 }
@@ -85,6 +87,7 @@ input InputProductUpdate {
     quantity: Int 
     description: String
     addressId: ID
+    isActivate: Boolean
 }
 
 input InputProduction {
@@ -149,6 +152,7 @@ type Production {
     quantity: Int!
     description: String
     addressId: ID
+    isActivate: Boolean
     viewTime: Int
 }
 
