@@ -1,3 +1,7 @@
 type Query {
     hello: String
+    
+    userById( uid: ID! ): User
 }
+
+type
