@@ -1,7 +1,8 @@
-const { matchUserById, matchUserByEmail } = require('../../mongo/user');
+const userRoot = require('./user');
+// continue import your roots
 
 module.exports = {
-  // hello: () => 'Hello world yes!',
-  userById: ({ uid }) => matchUserById({ userId: uid }),
-  userByEmail: ({ email, password }) => matchUserByEmail({ email, password }),
+  hello: () => 'Hello world yes!',
+  ...userRoot,
+  // add your roots here.
 };
