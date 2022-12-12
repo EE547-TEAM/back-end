@@ -31,7 +31,8 @@ async function productCreate({
  * @returns { Document }
  */
 async function matchProductById({ productionID }) {
-  return Production.findOne({ _id: productionID }).exec();
+  const product = await Production.findOne({ _id: productionID }).exec();
+  return product;
 }
 
 /**
@@ -58,11 +59,11 @@ async function matchProductByName({ name }) {
  * , for example: { productionID: 123455, name: T-shirt } } param
  * @return { Promise<*> }
  */
-async function productUpdate({ params }) {
-  const param = params;
-  const filter = { _id: param.productionID };
-  delete param.productionID;
-  return Production.findOneAndUpdate(filter, param).exec();
+async function productUpdate({ id, data }) {
+  // const param = params;
+  const filter = { _id: id };
+  // delete param.productionID;
+  return Production.findOneAndUpdate(filter, data).exec();
 }
 
 /**

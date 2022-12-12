@@ -1,3 +1,184 @@
-type Query {
-    hello: String
+scalar DateTime
+
+enum MessageStatusEnum {
+    read
+    unread
 }
+
+enum OrderStatusEnum {
+    created
+    trading
+    reject
+    confirm
+}
+
+enum RateTypeEnum {
+    buyer
+    seller
+}
+
+type Query {
+    # hello: String
+    userById(uid: ID!): User
+    userByEmail(email: String, password: String): User
+    rateByUser(uid: ID, type: RateTypeEnum): Rate
+
+    productionById(pid: ID): Production
+    productionByUser(uid: ID): Production
+    productionByName(name: String): Production
+
+    orderById(oid: ID): Order
+    orderBySeller(uid: ID, status: OrderStatusEnum): Order
+    orderByBuyer(uid: ID, status: OrderStatusEnum): Order
+
+    messageByChat(cid: ID): [Message]
+    lastMessageByChat(cid: ID): Message
+    
+    chatByUser(uid: ID): Chat
+    addressById(aid: ID): Address
+}
+
+type Mutation {
+    userCreate(inputUser: InputUser): User
+    rateCreate(inputRate: InputRate): Rate
+    productionCreate(inputProduction: InputProduction): Production
+    orderCreate(inputOrder: inputOrder): Order
+    messageCreate(inputMessage: InputMessage): Message
+    chatCreate(pids: [ID]): Chat
+    addressCreate(inputAddress: InputAddress): Address
+
+    userProfileUpdate(uid: ID, data: InputUser): User
+    productionUpdate(pid: ID, data: InputProductUpdate): Production
+    productionDelete(pid: ID): Production
+    orderUpdate(oid: ID, status: OrderStatusEnum, modifiedTime: DateTime): Order
+    messageUpdate(mid: ID): Message
+}
+
+input InputUser {
+    name: String
+    email: String
+    password: String
+}
+
+input InputRate {
+    score: Float
+    comment: String
+    fromUserId: ID
+    toUserId: ID
+    rateType: RateTypeEnum
+}
+
+input InputProductUpdate {
+    price: Float
+    name: String
+    condition: String
+    quantity: Int 
+    description: String
+    addressId: ID
+}
+
+input InputProduction {
+    userId: ID
+    price: Float
+    name: String 
+    condition: String 
+    quantity: Int 
+    description: String
+    publishTime: DateTime 
+    addressId: ID
+}
+
+input inputOrder {
+    productionID: ID
+    quantity: Int
+    buyerID: ID 
+    sellerID: ID 
+    addressFromId: ID 
+    addressToId: ID
+}
+
+input InputMessage {
+    chatId: ID
+    senderId: ID
+    content: String 
+    status: OrderStatusEnum
+}
+
+input InputAddress {
+    content: String
+    userId: ID
+    def: Boolean
+}
+
+type User {
+    _id: ID!
+    name: String
+    email: String
+    buyerRate: Float
+    sellerRate: Float
+}
+
+type Authority {
+    _id: ID
+    userId: ID!
+    password: String
+}
+
+type Address {
+    _id: ID
+    content: String!
+    userId: ID!
+    is_default: Boolean
+}
+
+type Production {
+    _id: ID
+    userId: ID
+    price: Float
+    name: String
+    condition: String
+    quantity: Int!
+    description: String
+    publishTime: DateTime
+    addressId: ID
+    viewTime: Int
+}
+
+type Order {
+    _id: ID
+    productionID: ID!
+    quantity: Int
+    buyerID: ID
+    sellerID: ID
+    status: OrderStatusEnum
+    tradingTimestamp: DateTime
+    rejectTimestamp: DateTime
+    confirmTimestamp: DateTime
+    addressFromId: ID
+    addressToId: ID
+}
+
+type Rate {
+    _id: ID
+    score: Float
+    orderId: ID
+    comment: String
+    rateFromId: ID
+    rateToId: ID
+    Type: RateTypeEnum
+}
+
+type Chat {
+    _id: ID
+    participant: [ID]
+}
+
+type Message {
+    _id: ID
+    chatId: ID,
+    senderId: ID,
+    content: String,
+    message_timestamp: DateTime,
+    status: MessageStatusEnum, 
+}
+
