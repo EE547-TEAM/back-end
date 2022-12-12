@@ -27,12 +27,7 @@ async function getChatsbyUserId({ userId }) {
   return (chats);
 }
 
-async function GetChatbyUser({ email }) {
-  return Chat.find({ email });
-}
-
 module.exports = {
   chatCreate,
   getChatsbyUserId,
-  GetChatbyUser,
 };
