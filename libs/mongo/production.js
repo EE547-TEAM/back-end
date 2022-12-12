@@ -31,7 +31,8 @@ async function productCreate({
  * @returns { Document }
  */
 async function matchProductById({ productionID }) {
-  return Production.findOne({ _id: productionID }).exec();
+  const product = await Production.findOne({ _id: productionID }).exec();
+  return product;
 }
 
 /**
