@@ -2,7 +2,7 @@
  * Implement production graphql API
  */
 const { isValidObjectID } = require('../../../utils/validation');
-const { matchProductById } = require('../../mongo/production');
+const { matchProductById, productCreate } = require('../../mongo/production');
 const {
   WRONG_ID_FORMAT, EMPTY_NAME, PRICE_FORMAT, QUANTITY_FORMAT,
 } = require('../errors');
@@ -29,8 +29,7 @@ function productionCreate({ InputProduction }) {
   if (Number.isNaN(quantity)) {
     throw QUANTITY_FORMAT;
   }
-
-  return productionCreate({
+  return productCreate({
     userId,
     price,
     name,
