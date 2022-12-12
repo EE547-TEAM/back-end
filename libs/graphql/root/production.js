@@ -7,7 +7,7 @@ const {
   productUpdate, productDelete,
 } = require('../../mongo/production');
 const {
-  WRONG_ID_FORMAT, EMPTY_NAME, PRICE_FORMAT, QUANTITY_FORMAT,
+  WRONG_ID_FORMAT, PRICE_FORMAT, QUANTITY_FORMAT, NAME_FORMAT,
 } = require('../errors');
 
 /**
@@ -27,7 +27,7 @@ function productionCreate({ inputProduction }) {
   quantity = Number(quantity);
 
   if (name === undefined) {
-    throw EMPTY_NAME;
+    throw NAME_FORMAT;
   }
 
   if (Number.isNaN(price)) {
@@ -75,17 +75,23 @@ function productionByUser({ uid }) {
 }
 
 function productionByName({ name }) {
-  if (name === undefined) {
-    throw EMPTY_NAME;
+  if (name === undefined || name === '') {
+    throw NAME_FORMAT;
   }
   return matchProductByName({ name });
 }
 
 function productionUpdate({ pid, data }) {
+  if (!isValidObjectID(pid)) {
+    throw WRONG_ID_FORMAT;
+  }
   return productUpdate({ id: pid, data });
 }
 
 function productionDelete({ pid }) {
+  if (!isValidObjectID(pid)) {
+    throw WRONG_ID_FORMAT;
+  }
   return productDelete({ productionID: pid });
 }
 
