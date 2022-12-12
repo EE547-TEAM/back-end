@@ -15,10 +15,10 @@ const { Production } = require('./model');
  * @returns { Promise<*> }
  */
 async function productCreate({
-  userId, price, name, condition, quantity, description, addressId,
+  userId, price, name, condition, quantity, description, addressId, isActivate,
 }) {
   const product = new Production({
-    userId, price, name, condition, quantity, description, addressId, viewTime: 0,
+    userId, price, name, condition, quantity, description, addressId, isActivate, viewTime: 0,
   });
   const productdoc = await product.save();
   return productdoc;
@@ -38,8 +38,8 @@ async function matchProductById({ productionID }) {
  * @param { userId: Schema.Type.ObjectId } param0
  * @returns { Document }
  */
-async function matchProductByUser({ userId }) {
-  const product = await Production.find({ userId }).exec();
+async function matchProductByUser({ userId, isActivate }) {
+  const product = await Production.find({ userId, isActivate }).exec();
   return product;
 }
 
@@ -48,8 +48,8 @@ async function matchProductByUser({ userId }) {
  * @param { name: String } param
  * @returns { Document }
  */
-async function matchProductByName({ name }) {
-  const product = await Production.find({ name }).exec();
+async function matchProductByName({ name, isActivate }) {
+  const product = await Production.find({ name, isActivate }).exec();
   return product;
 }
 

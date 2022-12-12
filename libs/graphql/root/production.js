@@ -45,6 +45,7 @@ function productionCreate({ inputProduction }) {
     quantity,
     description,
     addressId,
+    isActivate: true,
   });
 }
 
@@ -67,18 +68,18 @@ function productionById({ pid }) {
  * @param { uid: Schema.Types.ObjectId } param0
  * @returns
  */
-function productionByUser({ uid }) {
+function productionByUser({ uid, activate }) {
   if (!isValidObjectID(uid)) {
     throw WRONG_ID_FORMAT;
   }
-  return matchProductByUser({ userId: uid });
+  return matchProductByUser({ userId: uid, isActivate: activate });
 }
 
-function productionByName({ name }) {
+function productionByName({ name, activate }) {
   if (name === undefined || name === '') {
     throw NAME_FORMAT;
   }
-  return matchProductByName({ name });
+  return matchProductByName({ name, isActivate: activate });
 }
 
 function productionUpdate({ pid, data }) {
@@ -95,6 +96,16 @@ function productionDelete({ pid }) {
   return productDelete({ productionID: pid });
 }
 
+async function productionViewTimeincrement({ pid }) {
+  if (!isValidObjectID(pid)) {
+    throw WRONG_ID_FORMAT;
+  }
+  const product = await productionById({ pid });
+  let { viewTime } = product;
+  viewTime += 1;
+  const data = { viewTime };
+  return productUpdate({ id: pid, data });
+}
 module.exports = {
   productionCreate,
   productionById,
@@ -102,4 +113,5 @@ module.exports = {
   productionByName,
   productionUpdate,
   productionDelete,
+  productionViewTimeincrement,
 };
