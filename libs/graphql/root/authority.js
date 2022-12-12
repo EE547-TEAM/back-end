@@ -12,12 +12,41 @@ const {
   EMAIL_FORMAT, PASSWORD_FORMAT, USER_NOT_FOUND, WRONG_ID_FORMAT, USER_EXISTED,
 } = require('../errors');
 
+const LOGIN_USER = 'loginUser';
+
+/**
+ *
+ * @param {import('express-session').Session} session
+ */
+function getLoginUserFrom(session) {
+  return session[LOGIN_USER];
+}
+
+/**
+ *
+ * @param {import('express-session').Session} session
+ * @param {Object} user
+ */
+async function saveLoginUserTo(session, user) {
+  return new Promise((res, rej) => {
+    // eslint-disable-next-line no-param-reassign
+    session[LOGIN_USER] = user;
+    session.save((err) => {
+      if (err) rej(err);
+      else res();
+    });
+  });
+}
+
 /**
  *
  * @param {*} param0
  * @returns
  */
-async function authority({ email, password }) {
+async function authority({ email, password }, request) {
+  //
+  const loginUser = getLoginUserFrom(request.session);
+  if (loginUser !== undefined) return loginUser;
   // params validation
   if (!isValidEmail(email)) throw EMAIL_FORMAT;
   if (!isValidPassword(password)) throw PASSWORD_FORMAT;
@@ -25,7 +54,12 @@ async function authority({ email, password }) {
   // logics
   const user = await matchUserByEmail({ email });
   const isMatch = await isUserIdAndPasswordMatched({ userId: user.id, password });
-  return isMatch ? user : null;
+  if (isMatch) {
+    // save to session
+    await saveLoginUserTo(request.session, user);
+    return user;
+  }
+  return null;
 }
 
 async function logout({ uid }) {
