@@ -25,9 +25,7 @@ async function productCreate({
 }
 
 /**
- * @description: we might want to get production from a order
- * , now we will use productionId to get the corresponding product
- * @param {{ Id: Schema.Types.ObjectId }} param
+ * @param {{ productionID: Schema.Types.ObjectId }} param
  * @returns { Document }
  */
 async function matchProductById({ productionID }) {
@@ -41,7 +39,8 @@ async function matchProductById({ productionID }) {
  * @returns { Document }
  */
 async function matchProductByUser({ userId }) {
-  return Production.find({ userId }).exec();
+  const product = await Production.find({ userId }).exec();
+  return product;
 }
 
 /**
@@ -50,7 +49,8 @@ async function matchProductByUser({ userId }) {
  * @returns { Document }
  */
 async function matchProductByName({ name }) {
-  return Production.find({ name }).exec();
+  const product = await Production.find({ name }).exec();
+  return product;
 }
 
 /**
