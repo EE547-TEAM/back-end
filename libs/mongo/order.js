@@ -49,7 +49,8 @@ async function matchOrderById({ orderId }) {
  * @returns {Documents}
  */
 async function matchOrderBySeller({ userId, status }) {
-  return Order.find({ sellerID: userId, status });
+  return Order.find({ sellerID: userId, status }).exec();
+  // return Order.find({ status: 'created' }).exec();
 }
 
 /**
@@ -71,22 +72,25 @@ async function updateOrder({ orderId, status, modifiedTime }) {
   switch (status) {
     case 'trading': {
       const update1 = { status: 'trading', tradingTimestamp: modifiedTime };
-      await Order.findOneAndUpdate(filter, update1);
+      const order = await Order.findOneAndUpdate(filter, update1);
+      return order;
       // order.tradingTimestamp = modifiedTime;
-      break;
+      // break;
     }
     case 'reject': {
       const update2 = { status: 'reject', rejectTimestamp: modifiedTime };
-      await Order.findOneAndUpdate(filter, update2);
-      break;
+      const order = await Order.findOneAndUpdate(filter, update2);
+      // break;
+      return order;
     }
     case 'confirm': {
       const update3 = { status: 'confirm', confirmTimestamp: modifiedTime };
-      await Order.findOneAndUpdate(filter, update3);
-      break;
+      const order = await Order.findOneAndUpdate(filter, update3);
+      // break;
+      return order;
     }
     default:
-      break;
+      return null;
   }
 }
 

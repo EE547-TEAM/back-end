@@ -34,7 +34,7 @@ function productionCreate({ inputProduction }) {
     throw PRICE_FORMAT;
   }
 
-  if (Number.isNaN(quantity)) {
+  if (Number.isNaN(quantity) || quantity === 0) {
     throw QUANTITY_FORMAT;
   }
   return productCreate({

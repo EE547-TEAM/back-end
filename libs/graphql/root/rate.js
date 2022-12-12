@@ -1,5 +1,5 @@
 /**
- * Implement user graphql API
+ * Implement rate graphql API
  */
 const { rateCreate } = require('../../mongo/rate');
 const { isValidObjectID } = require('../../../utils/validation');
