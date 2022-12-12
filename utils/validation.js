@@ -27,8 +27,18 @@ function isValidObjectID(id) {
   return isObjectIdOrHexString(id);
 }
 
+/**
+ *
+ * @param {string} id
+ * @returns {boolean}
+ */
+function isValidSting(string) {
+  return string !== '';
+}
+
 module.exports = {
   isValidEmail,
   isValidPassword,
   isValidObjectID,
+  isValidSting,
 };
