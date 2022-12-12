@@ -7,6 +7,7 @@
 // eslint-disable-next-line no-unused-vars
 const { model, Document } = require('mongoose');
 const { User } = require('./model');
+const { getRatesbyUser } = require('./rate');
 
 /**
  *
@@ -57,9 +58,20 @@ async function userProfileUpdate({ id, data }) {
   User.findOneAndUpdate(filter, data).exec();
 }
 
+/**
+ * update user's rate
+ * @param {{ userId: string, type: 'buyer' | 'seller', score: number }} param0
+ * @returns { Document }
+ */
+async function userRateUpdate({ userId, type }) {
+  const score = getRatesbyUser({ userId });
+  return User.updateOne({ rateToId: userId, Type: type }, { $set: { score } }).exec();
+}
+
 module.exports = {
   userCreate,
   matchUserById,
   matchUserByEmail,
   userProfileUpdate,
+  userRateUpdate,
 };

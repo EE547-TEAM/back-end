@@ -48,6 +48,7 @@ type Mutation {
     addressCreate(inputAddress: InputAddress): Address
 
     userProfileUpdate(uid: ID, data: InputUser): User
+    userRateUpdate(uid: ID, type: RateTypeEnum): User
     productionUpdate(pid: ID, data: InputProductUpdate): Production
     productionDelete(pid: ID): Production
     orderUpdate(oid: ID, status: OrderStatusEnum, modifiedTime: DateTime): Order
