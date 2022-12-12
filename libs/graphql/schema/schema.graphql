@@ -60,12 +60,14 @@ type Mutation {
     productionUpdate(pid: ID, data: InputProductUpdate): Production
     productionDelete(pid: ID): Production
 
+
     orderCreatedToTrading(oid: ID): Order
     orderTradingToConfirm(oid: ID): Order
     orderTradingToReject(oid: ID): Order
 
     productionViewTimeincrement(pid: ID): Production
-
+    
+    orderUpdate(oid: ID, status: OrderStatusEnum, modifiedTime: DateTime): Order
     messageUpdate(mid: ID): Message
 }
 
