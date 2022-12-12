@@ -10,7 +10,7 @@ const { Authority } = require('./model');
 
 /**
  *
- * @param {{ userId: Schema.Types.ObjectId, password: string }} param0
+ * @param {{ userId: string, password: string }} param0
  * @returns
  */
 async function isUserIdAndPasswordMatched({ userId, password }) {
@@ -20,24 +20,24 @@ async function isUserIdAndPasswordMatched({ userId, password }) {
 
 /**
  *
- * @param {{ userId: Schema.Types.ObjectId, password: string }} param0
+ * @param {{ userId: string, password: string }} param0
  */
-async function updatePassword({ userId, password }) {
-  const filter = { _id: userId };
-  const update = { password };
-  return Authority.findOneAndUpdate(filter, update).exec();
+async function updatePassword({ userId, password }, session) {
+  const filter = { userId };
+  const update = { $set: { password } };
+  return Authority.updateOne(filter, update).session(session).exec();
 }
 
-async function createPassword({ userId, password }) {
+async function createAuthority({ userId, password }, session) {
   const authority = new Authority({
     userId,
     password,
   });
-  return authority.save();
+  return authority.save({ session });
 }
 
 module.exports = {
   isUserIdAndPasswordMatched,
   updatePassword,
-  createPassword,
+  createAuthority,
 };
