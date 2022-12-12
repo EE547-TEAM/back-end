@@ -12,17 +12,17 @@ const { getRatesbyUser } = require('./rate');
 /**
  *
  * @param { name: String, password: String, email: String } param0
+ * @param { ClientSession | null | undefined } session
  * @returns {Promise<*>}
  */
-async function userCreate({ name, password, email }) {
+async function userCreate({ name, email }, session) {
   const user = new User({
     name,
-    password,
     email,
     buyerRate: 0,
     sellerRate: 0,
   });
-  const saveDoc = await user.save();
+  const saveDoc = await user.save({ session });
   return saveDoc;
 }
 
@@ -37,12 +37,12 @@ async function matchUserById({ userId }) {
 }
 
 /**
- * @description: according to email and password to find user
- * @param {email: String, password: String} param
+ * @description: according to email find user
+ * @param {{email: String}} param
  * @returns {Document}
  */
-async function matchUserByEmail({ email, password }) {
-  const user = await User.findOne({ email, password });
+async function matchUserByEmail({ email }) {
+  const user = await User.findOne({ email });
   return user;
 }
 
@@ -68,10 +68,17 @@ async function userRateUpdate({ userId, type }) {
   return User.updateOne({ rateToId: userId, Type: type }, { $set: { score } }).exec();
 }
 
+async function isUserExisted({ email }) {
+  const user = await User.findOne({ email }).exec();
+  console.log('isUserExisted', user, user != null);
+  return user != null;
+}
+
 module.exports = {
   userCreate,
   matchUserById,
   matchUserByEmail,
   userProfileUpdate,
   userRateUpdate,
+  isUserExisted,
 };
