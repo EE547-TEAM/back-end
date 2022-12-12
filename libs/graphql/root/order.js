@@ -6,7 +6,7 @@ const {
   matchOrderById, matchOrderBySeller, matchcOrderByBuyer, orderCreate, updateOrder,
 } = require('../../mongo/order');
 const { matchProductById, productUpdate } = require('../../mongo/production');
-const { WRONG_ID_FORMAT, QUANTITY_FORMAT, STAUS_FORMAT } = require('../errors');
+const { WRONG_ID_FORMAT, QUANTITY_FORMAT, STATUS_FORMAT } = require('../errors');
 
 /**
  *
@@ -45,8 +45,6 @@ async function createOrder({ inputOrder }) {
   const {
     productionID,
     buyerID,
-    // sellerID,
-    // addressFromId,
     addressToId,
   } = inputOrder;
   let { quantity } = inputOrder;
@@ -58,8 +56,6 @@ async function createOrder({ inputOrder }) {
 
   if (!isValidObjectID(productionID)
   || !isValidObjectID(buyerID)
-  //   || !isValidObjectID(sellerID)
-  //   || !isValidObjectID(addressFromId)
   || !isValidObjectID(addressToId)) {
     throw WRONG_ID_FORMAT;
   }
@@ -75,29 +71,6 @@ async function createOrder({ inputOrder }) {
   });
 }
 
-// async function orderUpdate({ oid, status, modifiedTime }) {
-//   if (!isValidObjectID(oid)) {
-//     throw WRONG_ID_FORMAT;
-//   }
-//   // if the order has been confirmed, now we have to modify production parameters
-//   if (status === 'confirm') {
-//     const order = orderById({ oid });
-//     console.log(order);
-//     const { productionID } = order;
-//     let { quantity } = order;
-//     //   const productionID = order.productionID;
-// const product = await matchProductById({ productionID });
-// if (quantity > product.quantity) {
-//   throw QUANTITY_FORMAT;
-// }
-// quantity = product.quantity - quantity;
-// console.log(quantity);
-// const data = { quantity };
-//     productUpdate({ id: productionID, data });
-//   }
-//   return updateOrder({ orderId: oid, status, modifiedTime });
-// }
-
 async function orderCreatedToTrading({ oid }) {
   if (!isValidObjectID(oid)) {
     throw WRONG_ID_FORMAT;
@@ -105,7 +78,7 @@ async function orderCreatedToTrading({ oid }) {
   const order = await orderById({ oid });
   const { status } = order;
   if (status !== 'created') {
-    throw STAUS_FORMAT;
+    throw STATUS_FORMAT;
   }
   const modifiedTime = new Date();
   return updateOrder({ orderId: oid, status: 'trading', modifiedTime });
@@ -121,26 +94,42 @@ async function orderTradingToConfirm({ oid }) {
   let { quantity } = order;
   // check status
   if (status !== 'trading') {
-    throw STAUS_FORMAT;
+    throw STATUS_FORMAT;
   }
   const product = await matchProductById({ productionID });
+  // check isActivate
+  if (product.isActivate === false) {
+    throw STATUS_FORMAT;
+  }
   // check quantity
   if (quantity > product.quantity) {
     throw QUANTITY_FORMAT;
   }
   const modifiedTime = new Date();
   quantity = product.quantity - quantity;
-  console.log(quantity);
   const data = { quantity };
   if (quantity === 0) {
     data.isActivate = false;
   }
-  console.log(data);
   // 1.update production info
   productUpdate({ id: productionID, data });
   // 2.update order info
   return updateOrder({ orderId: oid, status: 'confirm', modifiedTime });
 }
+
+async function orderTradingToReject({ oid }) {
+  if (!isValidObjectID(oid)) {
+    throw WRONG_ID_FORMAT;
+  }
+  const order = await orderById({ oid });
+  const { status } = order;
+  if (status !== 'trading') {
+    throw STATUS_FORMAT;
+  }
+  const modifiedTime = new Date();
+  return updateOrder({ orderId: oid, status: 'reject', modifiedTime });
+}
+
 module.exports = {
   orderById,
   orderBySeller,
@@ -149,4 +138,5 @@ module.exports = {
   //   orderUpdate,
   orderCreatedToTrading,
   orderTradingToConfirm,
+  orderTradingToReject,
 };

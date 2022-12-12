@@ -63,8 +63,6 @@ async function productUpdate({ id, data }) {
   // const param = params;
   const filter = { _id: id };
   // delete param.productionID;
-  console.log('yes?', data);
-  console.log(id);
   return Production.findOneAndUpdate(filter, data).exec();
 }
 
