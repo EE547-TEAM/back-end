@@ -18,9 +18,14 @@ enum RateTypeEnum {
 }
 
 type Query {
-    # hello: String
+
+    hello: String
+
+    authority(email: String!, password: String!): User
+    logout(uid: ID!): Boolean
+
+    isUserExisted(email: String!): Boolean
     userById(uid: ID!): User
-    userByEmail(email: String, password: String): User
     rateByUser(uid: ID, type: RateTypeEnum): Rate
 
     productionById(pid: ID): Production
@@ -39,7 +44,9 @@ type Query {
 }
 
 type Mutation {
-    userCreate(inputUser: InputUser): User
+
+    register(inputUser: InputUser): User
+
     rateCreate(inputRate: InputRate): Rate
     productionCreate(inputProduction: InputProduction): Production
     orderCreate(inputOrder: inputOrder): Order
