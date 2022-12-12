@@ -50,11 +50,11 @@ async function matchUserByEmail({ email, password }) {
  * @param {params: an boject includes parameters} param0
  * @return: {null}
  */
-async function userProfileUpdate({ params }) {
-  const param = params;
-  const filter = { _id: param.userId };
-  delete param.userId;
-  User.findOneAndUpdate(filter, param).exec();
+async function userProfileUpdate({ id, data }) {
+  // const param = params;
+  const filter = { _id: id };
+  // delete param.userId;
+  User.findOneAndUpdate(filter, data).exec();
 }
 
 module.exports = {
