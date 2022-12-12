@@ -52,10 +52,9 @@ async function matchUserByEmail({ email }) {
  * @return: {null}
  */
 async function userProfileUpdate({ id, data }) {
-  // const param = params;
   const filter = { _id: id };
   // delete param.userId;
-  User.findOneAndUpdate(filter, data).exec();
+  return User.findByIdAndUpdate(filter, data).exec();
 }
 
 /**
@@ -64,8 +63,15 @@ async function userProfileUpdate({ id, data }) {
  * @returns { Document }
  */
 async function userRateUpdate({ userId, type }) {
-  const score = getRatesbyUser({ userId });
-  return User.updateOne({ rateToId: userId, Type: type }, { $set: { score } }).exec();
+  const score = await getRatesbyUser({ userId, type });
+  let update;
+  if (type === 'seller') {
+    update = { sellerRate: score };
+  }
+  if (type === 'buyer') {
+    update = { buyerRate: score };
+  }
+  return User.findOneAndUpdate({ rateToId: userId, Type: type }, update).exec();
 }
 
 async function isUserExisted({ email }) {
