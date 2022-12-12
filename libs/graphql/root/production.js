@@ -2,16 +2,24 @@
  * Implement production graphql API
  */
 const { isValidObjectID } = require('../../../utils/validation');
-const { matchProductById, productCreate } = require('../../mongo/production');
+const {
+  matchProductById, productCreate, matchProductByUser, matchProductByName,
+  productUpdate, productDelete,
+} = require('../../mongo/production');
 const {
   WRONG_ID_FORMAT, EMPTY_NAME, PRICE_FORMAT, QUANTITY_FORMAT,
 } = require('../errors');
 
-function productionCreate({ InputProduction }) {
+/**
+ *
+ * @param { inputproduction} param0
+ * @returns
+ */
+function productionCreate({ inputProduction }) {
   const {
     userId, name, condition, description, addressId,
-  } = InputProduction;
-  let { price, quantity } = InputProduction;
+  } = inputProduction;
+  let { price, quantity } = inputProduction;
   if (!isValidObjectID(userId) || !isValidObjectID(addressId)) {
     throw WRONG_ID_FORMAT;
   }
@@ -54,7 +62,38 @@ function productionById({ pid }) {
   return matchProductById({ productionID: pid });
 }
 
+/**
+ *
+ * @param { uid: Schema.Types.ObjectId } param0
+ * @returns
+ */
+function productionByUser({ uid }) {
+  if (!isValidObjectID(uid)) {
+    throw WRONG_ID_FORMAT;
+  }
+  return matchProductByUser({ userId: uid });
+}
+
+function productionByName({ name }) {
+  if (name === undefined) {
+    throw EMPTY_NAME;
+  }
+  return matchProductByName({ name });
+}
+
+function productionUpdate({ pid, data }) {
+  return productUpdate({ id: pid, data });
+}
+
+function productionDelete({ pid }) {
+  return productDelete({ productionID: pid });
+}
+
 module.exports = {
   productionCreate,
   productionById,
+  productionByUser,
+  productionByName,
+  productionUpdate,
+  productionDelete,
 };

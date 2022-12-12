@@ -29,8 +29,8 @@ type Query {
     rateByUser(uid: ID, type: RateTypeEnum): Rate
 
     productionById(pid: ID): Production
-    productionByUser(uid: ID): Production
-    productionByName(name: String): Production
+    productionByUser(uid: ID): [Production]
+    productionByName(name: String): [Production]
 
     orderById(oid: ID): Order
     orderBySeller(uid: ID, status: OrderStatusEnum): Order
