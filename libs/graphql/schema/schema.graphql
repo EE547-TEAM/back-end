@@ -26,7 +26,7 @@ type Query {
 
     isUserExisted(email: String!): Boolean
     userById(uid: ID!): User
-    rateByUser(uid: ID, type: RateTypeEnum): Rate
+    rateByUser(uid: ID, type: RateTypeEnum): Float
 
     productionById(pid: ID): Production
     productionByUser(uid: ID): [Production]
@@ -71,6 +71,7 @@ input InputUser {
 
 input InputRate {
     score: Float
+    orderId: ID
     comment: String
     fromUserId: ID
     toUserId: ID
