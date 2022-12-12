@@ -14,9 +14,9 @@ const { Address } = require('./model');
  * @returns address
  * userId: Object(userId)
  */
-async function getAddressbyId({ _Id }) {
-  const addresses = await Address.find({ _Id }).exec();
-  return (addresses.map((address) => address.content));
+async function getAddressbyId({ _id }) {
+  const addresses = await Address.findOne({ _id }).exec();
+  return addresses;
 }
 
 /**

@@ -17,7 +17,7 @@ function addressById({ aid }) {
     throw WRONG_ID_FORMAT;
   }
   // logics
-  return getAddressbyId({ userId: aid });
+  return getAddressbyId({ _id: aid });
 }
 
 function createAddress({ String, ID, Boolean }) {
