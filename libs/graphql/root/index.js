@@ -3,6 +3,7 @@ const userRoot = require('./user');
 const authorityRoot = require('./authority');
 const productionRoot = require('./production');
 const rateRoot = require('./rate');
+const orderRoot = require('./order');
 
 module.exports = {
   hello: () => 'Hello world yes!',
@@ -11,4 +12,5 @@ module.exports = {
   ...authorityRoot,
   ...productionRoot,
   ...rateRoot,
+  ...orderRoot,
 };
