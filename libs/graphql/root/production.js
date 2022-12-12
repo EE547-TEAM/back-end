@@ -3,14 +3,43 @@
  */
 const { isValidObjectID } = require('../../../utils/validation');
 const { matchProductById } = require('../../mongo/production');
-const { WRONG_ID_FORMAT } = require('../errors');
+const {
+  WRONG_ID_FORMAT, EMPTY_NAME, PRICE_FORMAT, QUANTITY_FORMAT,
+} = require('../errors');
 
-// function productionCreate({ InputProduction }) {
-//   const { userId, price, quantity, description, publishTime, addressId } = InputProduction;
-//     if (!isValidObjectID(userId) || !isValidObjectID(addressId)) {
-//       throw WRONG_ID_FORMAT;
-//     }
-// }
+function productionCreate({ InputProduction }) {
+  const {
+    userId, name, condition, description, addressId,
+  } = InputProduction;
+  let { price, quantity } = InputProduction;
+  if (!isValidObjectID(userId) || !isValidObjectID(addressId)) {
+    throw WRONG_ID_FORMAT;
+  }
+  price = Number.parseFloat(price);
+  quantity = Number(quantity);
+
+  if (name === undefined) {
+    throw EMPTY_NAME;
+  }
+
+  if (Number.isNaN(price)) {
+    throw PRICE_FORMAT;
+  }
+
+  if (Number.isNaN(quantity)) {
+    throw QUANTITY_FORMAT;
+  }
+
+  return productionCreate({
+    userId,
+    price,
+    name,
+    condition,
+    quantity,
+    description,
+    addressId,
+  });
+}
 
 /**
  *
@@ -27,5 +56,6 @@ function productionById({ pid }) {
 }
 
 module.exports = {
+  productionCreate,
   productionById,
 };
