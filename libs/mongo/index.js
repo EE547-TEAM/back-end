@@ -11,15 +11,16 @@ const order = require('./order');
 const production = require('./production');
 const rate = require('./rate');
 
+const { host, port, db } = mongodb;
+const connectPath = `mongodb://${host}:${port}/${db}`;
+
 async function initMongoDB() {
-  const { host, port, db } = mongodb;
-  const connectPath = `mongodb://${host}:${port}/${db}`;
-  console.log(connectPath);
   // connect to the mongoose.
   return connect(connectPath);
 }
 
 module.exports = {
+  connectPath,
   initMongoDB,
   ...user,
   ...address,
