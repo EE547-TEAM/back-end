@@ -53,7 +53,7 @@ async function matchLastMessageByChat({ chatId }) {
 async function messageUpdate({ messageId }) {
   const filter = { _id: messageId };
   const update = { status: 'read' };
-  await Message.findOneAndUpdate(filter, update);
+  return Message.findOneAndUpdate(filter, update);
 }
 
 /**
