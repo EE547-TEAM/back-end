@@ -26,15 +26,15 @@ type Query {
 
     isUserExisted(email: String!): Boolean
     userById(uid: ID!): User
-    rateByUser(uid: ID, type: RateTypeEnum): Rate
+    rateByUser(uid: ID, type: RateTypeEnum): Float
 
     productionById(pid: ID): Production
-    productionByUser(uid: ID): [Production]
-    productionByName(name: String): [Production]
+    productionByUser(uid: ID, activate: Boolean): [Production]
+    productionByName(name: String, activate: Boolean): [Production]
 
     orderById(oid: ID): Order
-    orderBySeller(uid: ID, status: OrderStatusEnum): Order
-    orderByBuyer(uid: ID, status: OrderStatusEnum): Order
+    orderBySeller(uid: ID, status: OrderStatusEnum): [Order]
+    orderByBuyer(uid: ID, status: OrderStatusEnum): [Order]
 
     messageByChat(cid: ID): [Message]
     lastMessageByChat(cid: ID): Message
@@ -50,7 +50,7 @@ type Mutation {
 
     rateCreate(inputRate: InputRate): Rate
     productionCreate(inputProduction: InputProduction): Production
-    orderCreate(inputOrder: inputOrder): Order
+    orderCreate(inputOrder: InputOrder): Order
     messageCreate(inputMessage: InputMessage): Message
     chatCreate(pids: [ID]): Chat
     addressCreate(inputAddress: InputAddress): Address
@@ -59,6 +59,14 @@ type Mutation {
     userRateUpdate(uid: ID, type: RateTypeEnum): User
     productionUpdate(pid: ID, data: InputProductUpdate): Production
     productionDelete(pid: ID): Production
+
+
+    orderCreatedToTrading(oid: ID): Order
+    orderTradingToConfirm(oid: ID): Order
+    orderTradingToReject(oid: ID): Order
+
+    productionViewTimeincrement(pid: ID): Production
+    
     orderUpdate(oid: ID, status: OrderStatusEnum, modifiedTime: DateTime): Order
     messageUpdate(mid: ID): Message
 }
@@ -71,6 +79,7 @@ input InputUser {
 
 input InputRate {
     score: Float
+    orderId: ID
     comment: String
     fromUserId: ID
     toUserId: ID
@@ -84,6 +93,7 @@ input InputProductUpdate {
     quantity: Int 
     description: String
     addressId: ID
+    isActivate: Boolean
 }
 
 input InputProduction {
@@ -96,12 +106,10 @@ input InputProduction {
     addressId: ID
 }
 
-input inputOrder {
+input InputOrder {
     productionID: ID
     quantity: Int
     buyerID: ID 
-    sellerID: ID 
-    addressFromId: ID 
     addressToId: ID
 }
 
@@ -148,6 +156,7 @@ type Production {
     quantity: Int!
     description: String
     addressId: ID
+    isActivate: Boolean
     viewTime: Int
 }
 
