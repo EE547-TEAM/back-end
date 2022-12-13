@@ -8,7 +8,7 @@
 const { model, Document, Schema } = require('mongoose');
 const { Chat } = require('./model');
 
-async function chatCreate({ participantId }) {
+async function createChat({ participantId }) {
   const chat = new Chat({
     participant: participantId,
   });
@@ -27,6 +27,6 @@ async function getChatsbyUserId({ userId }) {
 }
 
 module.exports = {
-  chatCreate,
+  createChat,
   getChatsbyUserId,
 };

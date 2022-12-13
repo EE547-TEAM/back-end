@@ -25,7 +25,7 @@ async function getAddressbyId({ _id }) {
  * @param {userId} param0
  * @returns save address in userId
  */
-async function addressCreate({ content, userId, def }) {
+async function createAddress({ content, userId, def }) {
   const address = new Address({
     content,
     userId,
@@ -37,5 +37,5 @@ async function addressCreate({ content, userId, def }) {
 
 module.exports = {
   getAddressbyId,
-  addressCreate,
+  createAddress,
 };

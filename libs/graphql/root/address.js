@@ -3,7 +3,7 @@
  */
 // const { isValidEmail, isValidPassword } = require('../../../utils/validation');
 const { isValidObjectID, isValidSting } = require('../../../utils/validation');
-const { getAddressbyId, addressCreate } = require('../../mongo/address.');
+const { getAddressbyId, createAddress } = require('../../mongo/address.');
 const { WRONG_ID_FORMAT, WRONG_ADDRESS_FORMAT } = require('../errors');
 
 /**
@@ -20,23 +20,23 @@ function addressById({ aid }) {
   return getAddressbyId({ _id: aid });
 }
 
-function createAddress({ inputAddress }) {
+function addressCreate({ inputAddress }) {
   // params validation
   const {
     content,
     userId,
     def,
   } = inputAddress;
-  if (!isValidSting(userId)) {
+  if (!isValidObjectID(userId)) {
     throw WRONG_ID_FORMAT;
   }
-  if (!isValidObjectID(content)) {
+  if (!isValidSting(content)) {
     throw WRONG_ADDRESS_FORMAT;
   }
-  return addressCreate({ content, userId, def });
+  return createAddress({ content, userId, def });
 }
 
 module.exports = {
   addressById,
-  createAddress,
+  addressCreate,
 };
