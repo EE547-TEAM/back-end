@@ -12,7 +12,13 @@ const {
   WRONG_ID_FORMAT, PRICE_FORMAT, QUANTITY_FORMAT, NAME_FORMAT, ACTIVATE_STATUS_FORMAT,
 } = require('../errors');
 
+/**
+ *
+ * @param {*} prodDoc
+ * @returns
+ */
 async function getAggregatedProductObject(prodDoc) {
+  if (prodDoc === undefined) { return null; }
   const [addrDoc, userDoc] = await Promise.all([
     getAddressbyId({ _id: prodDoc.addressId }),
     matchUserById({ userId: prodDoc.userId }),
@@ -101,8 +107,8 @@ async function productionByName({ name, activate }) {
   if (activate === undefined) {
     throw ACTIVATE_STATUS_FORMAT;
   }
-  const prodDoc = await matchProductByName({ name, isActivate: activate });
-  return getAggregatedProductObject(prodDoc);
+  const prodDocs = await matchProductByName({ name, isActivate: activate });
+  return Promise.all(prodDocs.map((prodDoc) => getAggregatedProductObject(prodDoc)));
 }
 
 async function productionUpdate({ pid, data }) {
