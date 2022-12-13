@@ -16,6 +16,7 @@ const { Address } = require('./model');
  */
 async function getAddressbyId({ _id }) {
   const addresses = await Address.findOne({ _id }).exec();
+
   return addresses;
 }
 

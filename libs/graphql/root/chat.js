@@ -2,36 +2,40 @@
  * Implement user graphql API
  */
 // const { isValidEmail, isValidPassword } = require('../../../utils/validation');
-const { isValidObjectID, isValidSting } = require('../../../utils/validation');
+const { isValidObjectID } = require('../../../utils/validation');
 const { getChatsbyUserId, createChat } = require('../../mongo/chat');
-const { WRONG_ID_FORMAT, WRONG_CHAT_FORMAT } = require('../errors');
+const { WRONG_ID_FORMAT } = require('../errors');
 
 /**
  *
  * @param {*} param0
  * @returns
  */
-function chatByUser({ uid }) {
+function chatsByUser({ uid }) {
   // params validation
+
   if (!isValidObjectID(uid)) {
     throw WRONG_ID_FORMAT;
   }
+
   // logics
   return getChatsbyUserId({ userId: uid });
 }
 
-function chatCreate({ String, ID, Boolean }) {
-  // params validation
-  if (!isValidSting(String)) {
-    throw WRONG_CHAT_FORMAT;
+function chatCreate({ pids }) {
+  // params validationc
+  // eslint-disable-next-line no-plusplus
+  for (let i = 0; i < pids.length; i++) {
+    console.log(pids[i]);
+
+    if (!isValidObjectID(pids[i])) {
+      throw WRONG_ID_FORMAT;
+    }
   }
-  if (!isValidObjectID(ID)) {
-    throw WRONG_ID_FORMAT;
-  }
-  return createChat({ content: String, userId: ID, def: Boolean });
+  return createChat({ userId: pids });
 }
 
 module.exports = {
-  chatByUser,
+  chatsByUser,
   chatCreate,
 };

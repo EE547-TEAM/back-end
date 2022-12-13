@@ -20,15 +20,20 @@ function addressById({ aid }) {
   return getAddressbyId({ _id: aid });
 }
 
-function createAddress({ String, ID, Boolean }) {
+function createAddress({ inputAddress }) {
   // params validation
-  if (!isValidSting(String)) {
+  const {
+    content,
+    userId,
+    def,
+  } = inputAddress;
+  if (!isValidSting(userId)) {
     throw WRONG_ID_FORMAT;
   }
-  if (!isValidObjectID(ID)) {
+  if (!isValidObjectID(content)) {
     throw WRONG_ADDRESS_FORMAT;
   }
-  return addressCreate({ content: String, userId: ID, def: Boolean });
+  return addressCreate({ content, userId, def });
 }
 
 module.exports = {

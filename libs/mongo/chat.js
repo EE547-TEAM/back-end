@@ -23,7 +23,7 @@ async function chatCreate({ participantId }) {
  */
 async function getChatsbyUserId({ userId }) {
   const chats = await Chat.where('participant').elemMatch({ $eq: userId }).exec();
-  return (chats);
+  return chats;
 }
 
 module.exports = {
