@@ -72,7 +72,7 @@ async function productUpdate({ id, data }) {
  * @return { Promise<*> }
  */
 async function productDelete({ productionID }) {
-  return Production.findByIdAndDelete({ _id: productionID }).exec();
+  return Production.findByIdAndUpdate({ _id: productionID }, { isActivate: false }).exec();
 }
 
 module.exports = {

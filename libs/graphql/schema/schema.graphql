@@ -147,13 +147,13 @@ type Address {
 
 type Production {
     _id: ID
-    userId: ID
+    user: User
     price: Float
     name: String
     condition: String
     quantity: Int!
     description: String
-    addressId: ID
+    address: Address
     isActivate: Boolean
     viewTime: Int
 }

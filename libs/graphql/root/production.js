@@ -2,20 +2,33 @@
  * Implement production graphql API
  */
 const { isValidObjectID } = require('../../../utils/validation');
+const { getAddressbyId } = require('../../mongo/address.');
 const {
   matchProductById, productCreate, matchProductByUser, matchProductByName,
   productUpdate, productDelete,
 } = require('../../mongo/production');
+const { matchUserById } = require('../../mongo/user');
 const {
   WRONG_ID_FORMAT, PRICE_FORMAT, QUANTITY_FORMAT, NAME_FORMAT, ACTIVATE_STATUS_FORMAT,
 } = require('../errors');
+
+async function getAggregatedProductObject(prodDoc) {
+  const [addrDoc, userDoc] = await Promise.all([
+    getAddressbyId({ _id: prodDoc.addressId }),
+    matchUserById({ userId: prodDoc.userId }),
+  ]);
+  const prod = prodDoc.toObject();
+  prod.address = addrDoc && addrDoc.toObject();
+  prod.user = userDoc && userDoc.toObject();
+  return prod;
+}
 
 /**
  *
  * @param { inputproduction} param0
  * @returns
  */
-function productionCreate({ inputProduction }) {
+async function productionCreate({ inputProduction }) {
   const {
     userId, name, condition, description, addressId,
   } = inputProduction;
@@ -37,7 +50,7 @@ function productionCreate({ inputProduction }) {
   if (Number.isNaN(quantity) || quantity === 0) {
     throw QUANTITY_FORMAT;
   }
-  return productCreate({
+  const prodDoc = await productCreate({
     userId,
     price,
     name,
@@ -47,6 +60,7 @@ function productionCreate({ inputProduction }) {
     addressId,
     isActivate: true,
   });
+  return getAggregatedProductObject(prodDoc);
 }
 
 /**
@@ -54,13 +68,14 @@ function productionCreate({ inputProduction }) {
  * @param { pid: Schema.Types.ObjectId } param0
  * @returns
  */
-function productionById({ pid }) {
+async function productionById({ pid }) {
   // params validation
   if (!isValidObjectID(pid)) {
     throw WRONG_ID_FORMAT;
   }
   // logics
-  return matchProductById({ productionID: pid });
+  const prodDoc = await matchProductById({ productionID: pid });
+  return getAggregatedProductObject(prodDoc);
 }
 
 /**
@@ -68,38 +83,42 @@ function productionById({ pid }) {
  * @param { uid: Schema.Types.ObjectId } param0
  * @returns
  */
-function productionByUser({ uid, activate }) {
+async function productionByUser({ uid, activate }) {
   if (!isValidObjectID(uid)) {
     throw WRONG_ID_FORMAT;
   }
   if (activate === undefined) {
     throw ACTIVATE_STATUS_FORMAT;
   }
-  return matchProductByUser({ userId: uid, isActivate: activate });
+  const prodDocs = await matchProductByUser({ userId: uid, isActivate: activate });
+  return Promise.all(prodDocs.map((prodDoc) => getAggregatedProductObject(prodDoc)));
 }
 
-function productionByName({ name, activate }) {
+async function productionByName({ name, activate }) {
   if (name === undefined || name === '') {
     throw NAME_FORMAT;
   }
   if (activate === undefined) {
     throw ACTIVATE_STATUS_FORMAT;
   }
-  return matchProductByName({ name, isActivate: activate });
+  const prodDoc = await matchProductByName({ name, isActivate: activate });
+  return getAggregatedProductObject(prodDoc);
 }
 
-function productionUpdate({ pid, data }) {
+async function productionUpdate({ pid, data }) {
   if (!isValidObjectID(pid)) {
     throw WRONG_ID_FORMAT;
   }
-  return productUpdate({ id: pid, data });
+  const prod = await productUpdate({ id: pid, data });
+  return getAggregatedProductObject(prod);
 }
 
-function productionDelete({ pid }) {
+async function productionDelete({ pid }) {
   if (!isValidObjectID(pid)) {
     throw WRONG_ID_FORMAT;
   }
-  return productDelete({ productionID: pid });
+  const prod = await productDelete({ productionID: pid });
+  return getAggregatedProductObject(prod);
 }
 
 async function productionViewTimeincrement({ pid }) {
@@ -110,8 +129,10 @@ async function productionViewTimeincrement({ pid }) {
   let { viewTime } = product;
   viewTime += 1;
   const data = { viewTime };
-  return productUpdate({ id: pid, data });
+  const prod = await productUpdate({ id: pid, data });
+  return getAggregatedProductObject(prod);
 }
+
 module.exports = {
   productionCreate,
   productionById,
