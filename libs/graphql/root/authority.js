@@ -8,7 +8,7 @@ const {
 } = require('../../mongo/user');
 
 const {
-  EMAIL_FORMAT, PASSWORD_FORMAT, USER_NOT_FOUND, USER_EXISTED,
+  EMAIL_FORMAT, PASSWORD_FORMAT, USER_NOT_FOUND, USER_EXISTED, PASSWORD_EMAIL_NOT_MATCH,
 } = require('../errors');
 
 const LOGIN_USER = 'loginUser';
@@ -43,22 +43,22 @@ async function saveLoginUserTo(session, user) {
  * @returns
  */
 async function authority({ email, password }, request) {
-  //
-  const loginUser = getLoginUserFrom(request.session);
-  if (loginUser !== undefined) return loginUser;
   // params validation
   if (!isValidEmail(email)) throw EMAIL_FORMAT;
   if (!isValidPassword(password)) throw PASSWORD_FORMAT;
   if (!isUserExisted({ email })) throw USER_NOT_FOUND;
   // logics
   const user = await matchUserByEmail({ email });
+  if (user === null) {
+    throw USER_NOT_FOUND;
+  }
   const isMatch = await isUserIdAndPasswordMatched({ userId: user.id, password });
   if (isMatch) {
     // save to session
     await saveLoginUserTo(request.session, user);
     return user;
   }
-  return null;
+  throw PASSWORD_EMAIL_NOT_MATCH;
 }
 
 async function logout({ uid }, request) {
