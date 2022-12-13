@@ -10,6 +10,9 @@ const { Rate } = require('./model');
 
 async function getRatesbyUser({ userId, type }) {
   const rates = await Rate.find({ userId: Object(userId), Type: type }).exec();
+  if (rates.length === 0) {
+    return 0;
+  }
   const scoreSum = rates.reduce((pre, rate) => pre + rate.score, 0);
   return scoreSum / rates.length;
 }

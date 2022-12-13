@@ -7,7 +7,7 @@ const {
   productUpdate, productDelete,
 } = require('../../mongo/production');
 const {
-  WRONG_ID_FORMAT, PRICE_FORMAT, QUANTITY_FORMAT, NAME_FORMAT,
+  WRONG_ID_FORMAT, PRICE_FORMAT, QUANTITY_FORMAT, NAME_FORMAT, ACTIVATE_STATUS_FORMAT,
 } = require('../errors');
 
 /**
@@ -72,12 +72,18 @@ function productionByUser({ uid, activate }) {
   if (!isValidObjectID(uid)) {
     throw WRONG_ID_FORMAT;
   }
+  if (activate === undefined) {
+    throw ACTIVATE_STATUS_FORMAT;
+  }
   return matchProductByUser({ userId: uid, isActivate: activate });
 }
 
 function productionByName({ name, activate }) {
   if (name === undefined || name === '') {
     throw NAME_FORMAT;
+  }
+  if (activate === undefined) {
+    throw ACTIVATE_STATUS_FORMAT;
   }
   return matchProductByName({ name, isActivate: activate });
 }

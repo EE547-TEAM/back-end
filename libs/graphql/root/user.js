@@ -44,7 +44,8 @@ function rateUpdate({ uid, type }) {
   if (!isValidObjectID(uid)) {
     throw WRONG_ID_FORMAT;
   }
-  return userRateUpdate({ userId: uid, type });
+  userRateUpdate({ userId: uid, type });
+  return userById({ uid });
 }
 
 module.exports = {

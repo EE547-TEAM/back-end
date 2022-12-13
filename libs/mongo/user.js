@@ -60,7 +60,7 @@ async function userProfileUpdate({ id, data }) {
 /**
  * update user's rate
  * @param {{ userId: string, type: 'buyer' | 'seller', score: number }} param0
- * @returns { Document }
+ * @returns { Rate }
  */
 async function userRateUpdate({ userId, type }) {
   const score = await getRatesbyUser({ userId, type });
@@ -71,7 +71,7 @@ async function userRateUpdate({ userId, type }) {
   if (type === 'buyer') {
     update = { buyerRate: score };
   }
-  return User.findOneAndUpdate({ rateToId: userId, Type: type }, update).exec();
+  return User.findOneAndUpdate({ _id: userId }, update).exec();
 }
 
 async function isUserExisted({ email }) {
