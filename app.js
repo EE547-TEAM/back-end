@@ -1,6 +1,5 @@
 const createError = require('http-errors');
 const express = require('express');
-const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
@@ -11,6 +10,7 @@ const { isDev } = require('./config/env');
 
 const graphqlHTTP = require('./routes/graphql');
 const { getGrqphqlSchema } = require('./libs/graphql');
+const session = require('./libs/session');
 
 async function startApp() {
   // init prerequested tasks
@@ -18,25 +18,27 @@ async function startApp() {
     initMongoDB(),
     getGrqphqlSchema(),
   ];
-  const initRes = await Promise.all(initTasks);
+  const initTaskResults = await Promise.all(initTasks);
 
   // development env test
-  console.log('db connnected');
+  console.log('init tasks done');
   // see examples, how to use mongoose.
   if (isDev) testMongoose();
 
   // init server
   const app = express();
+  // set session
+  // app.set('trust proxy', 1);
+  app.use(session);
 
   app.use(logger('dev'));
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
   app.use(cookieParser());
-  app.use(express.static(path.join(__dirname, 'public')));
 
   // register router
   app.use('/', normalRoute);
-  app.use('/graphql', graphqlHTTP(initRes[1]));
+  app.use('/graphql', graphqlHTTP(initTaskResults[1]));
 
   // catch 404 and forward to error handler
   app.use((_req, _res, next) => {

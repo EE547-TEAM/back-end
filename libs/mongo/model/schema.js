@@ -46,8 +46,8 @@ const Production = new Schema({
   condition: String,
   quantity: { type: Number, default: 1 },
   description: String,
-  publishTime: Date,
   addressId: Schema.Types.ObjectId,
+  isActivate: Boolean,
   viewTime: { type: Number, default: 0 },
 }, { timestamps: true });
 

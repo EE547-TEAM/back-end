@@ -6,7 +6,8 @@ const { isObjectIdOrHexString } = require('mongoose');
  * @returns {boolean}
  */
 function isValidEmail(email) {
-  return email !== '';
+  const reg = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+  return reg.test(email);
 }
 
 /**

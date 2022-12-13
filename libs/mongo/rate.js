@@ -22,10 +22,11 @@ async function getRatesbyUser({ userId, type }) {
  * @return {null}
  */
 async function rateCreate({
-  score, comment, fromUserId, toUserId, rateType,
+  score, orderId, comment, fromUserId, toUserId, rateType,
 }) {
   const rate = new Rate({
     score,
+    orderId,
     comment,
     rateFromId: fromUserId,
     rateToId: toUserId,

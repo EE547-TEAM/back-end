@@ -12,17 +12,17 @@ const { getRatesbyUser } = require('./rate');
 /**
  *
  * @param { name: String, password: String, email: String } param0
+ * @param { ClientSession | null | undefined } session
  * @returns {Promise<*>}
  */
-async function userCreate({ name, password, email }) {
+async function userCreate({ name, email }, session) {
   const user = new User({
     name,
-    password,
     email,
     buyerRate: 0,
     sellerRate: 0,
   });
-  const saveDoc = await user.save();
+  const saveDoc = await user.save({ session });
   return saveDoc;
 }
 
@@ -37,12 +37,12 @@ async function matchUserById({ userId }) {
 }
 
 /**
- * @description: according to email and password to find user
- * @param {email: String, password: String} param
+ * @description: according to email find user
+ * @param {{email: String}} param
  * @returns {Document}
  */
-async function matchUserByEmail({ email, password }) {
-  const user = await User.findOne({ email, password });
+async function matchUserByEmail({ email }) {
+  const user = await User.findOne({ email });
   return user;
 }
 
@@ -52,10 +52,9 @@ async function matchUserByEmail({ email, password }) {
  * @return: {null}
  */
 async function userProfileUpdate({ id, data }) {
-  // const param = params;
   const filter = { _id: id };
   // delete param.userId;
-  User.findOneAndUpdate(filter, data).exec();
+  return User.findByIdAndUpdate(filter, data).exec();
 }
 
 /**
@@ -64,8 +63,21 @@ async function userProfileUpdate({ id, data }) {
  * @returns { Document }
  */
 async function userRateUpdate({ userId, type }) {
-  const score = getRatesbyUser({ userId });
-  return User.updateOne({ rateToId: userId, Type: type }, { $set: { score } }).exec();
+  const score = await getRatesbyUser({ userId, type });
+  let update;
+  if (type === 'seller') {
+    update = { sellerRate: score };
+  }
+  if (type === 'buyer') {
+    update = { buyerRate: score };
+  }
+  return User.findOneAndUpdate({ rateToId: userId, Type: type }, update).exec();
+}
+
+async function isUserExisted({ email }) {
+  const user = await User.findOne({ email }).exec();
+  console.log('isUserExisted', user, user != null);
+  return user != null;
 }
 
 module.exports = {
@@ -74,4 +86,5 @@ module.exports = {
   matchUserByEmail,
   userProfileUpdate,
   userRateUpdate,
+  isUserExisted,
 };

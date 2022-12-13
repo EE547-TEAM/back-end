@@ -1,10 +1,11 @@
 /**
  * Implement user graphql API
  */
-// const { isValidEmail, isValidPassword } = require('../../../utils/validation');
+const { isValidEmail } = require('../../../utils/validation');
 const { isValidObjectID } = require('../../../utils/validation');
-const { matchUserById } = require('../../mongo/user');
-const { WRONG_ID_FORMAT } = require('../errors');
+const { matchUserById, isUserExisted, userProfileUpdate } = require('../../mongo/user');
+const { userRateUpdate } = require('../../mongo/user');
+const { WRONG_ID_FORMAT, EMAIL_FORMAT } = require('../errors');
 
 /**
  *
@@ -20,6 +21,35 @@ function userById({ uid }) {
   return matchUserById({ userId: uid });
 }
 
+/**
+ *
+ * @param { email: String } param0
+ * @returns
+ */
+function userExisted({ email }) {
+  if (!isValidEmail(email)) {
+    throw EMAIL_FORMAT;
+  }
+  return isUserExisted({ email });
+}
+
+function userprofileUp({ uid, data }) {
+  if (!isValidObjectID(uid)) {
+    throw WRONG_ID_FORMAT;
+  }
+  return userProfileUpdate({ id: uid, data });
+}
+
+function rateUpdate({ uid, type }) {
+  if (!isValidObjectID(uid)) {
+    throw WRONG_ID_FORMAT;
+  }
+  return userRateUpdate({ userId: uid, type });
+}
+
 module.exports = {
   userById,
+  isUserExisted: userExisted,
+  userProfileUpdate: userprofileUp,
+  userRateUpdate: rateUpdate,
 };
