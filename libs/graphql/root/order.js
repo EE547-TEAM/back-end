@@ -26,12 +26,18 @@ function orderBySeller({ uid, status }) {
   if (!isValidObjectID(uid)) {
     throw WRONG_ID_FORMAT;
   }
+  if (status === undefined) {
+    throw STATUS_FORMAT;
+  }
   return matchOrderBySeller({ userId: uid, status });
 }
 
 function orderByBuyer({ uid, status }) {
   if (!isValidObjectID(uid)) {
     throw WRONG_ID_FORMAT;
+  }
+  if (status === undefined) {
+    throw STATUS_FORMAT;
   }
   return matchcOrderByBuyer({ userId: uid, status });
 }
