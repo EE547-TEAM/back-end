@@ -14,9 +14,10 @@ const { Address } = require('./model');
  * @returns address
  * userId: Object(userId)
  */
-async function getAddressbyId({ _Id }) {
-  const addresses = await Address.find({ _Id }).exec();
-  return (addresses.map((address) => address.content));
+async function getAddressbyId({ _id }) {
+  const addresses = await Address.findOne({ _id }).exec();
+
+  return addresses;
 }
 
 /**
@@ -24,7 +25,7 @@ async function getAddressbyId({ _Id }) {
  * @param {userId} param0
  * @returns save address in userId
  */
-async function addressCreate({ content, userId, def }) {
+async function createAddress({ content, userId, def }) {
   const address = new Address({
     content,
     userId,
@@ -36,5 +37,5 @@ async function addressCreate({ content, userId, def }) {
 
 module.exports = {
   getAddressbyId,
-  addressCreate,
+  createAddress,
 };

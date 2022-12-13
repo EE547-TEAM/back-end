@@ -39,7 +39,7 @@ type Query {
     messageByChat(cid: ID): [Message]
     lastMessageByChat(cid: ID): Message
     
-    chatByUser(uid: ID): Chat
+    chatsByUser(uid: ID): [Chat]
     addressById(aid: ID): Address
 }
 
