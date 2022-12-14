@@ -69,6 +69,6 @@ Our Action workflow is test, compile and development. After we commit our change
 
 ###### MongoDB - Mongoose - GraphQL - ExpressJS
 
-    In the project, we use Mongoose for object mapping and Graphql for API implementation. We use Mongoose to create Documents from Schema then save it into Mongodb. Each folder contains its Model which supports MongoDB operations.
+In the project, we use Mongoose for object mapping and Graphql for API implementation. We use Mongoose to create Documents from Schema then save it into Mongodb. Each folder contains its Model which supports MongoDB operations.
 
-    For Instances, Address schema includes _id, content, userId, is_default. Graphql will request data from Mongoose and get data from MongoDB. The flow is User (client ) will ask or save data, next is integrate. With integrate, it can get data directly from session and graphql. Graphql can ask or get data from Mongoose. Mongoose can save the data in the format we need or get data from MongoDB.
+For Instances, Address schema includes _id, content, userId, is_default. Graphql will request data from Mongoose and get data from MongoDB. The flow is User (client ) will ask or save data, next is integrate. With integrate, it can get data directly from session and graphql. Graphql can ask or get data from Mongoose. Mongoose can save the data in the format we need or get data from MongoDB.
