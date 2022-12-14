@@ -50,7 +50,11 @@ Before we start the project, we add strict git branch restrictions, and Airbnb c
 
 ![1670987305066](image/README/1670987305066.png)
 
-`Eslint` style check before commit.
+`Eslint` style check before commit (git precommit hook).
+
+`.github/hooks/eslint.sh` is the eslint pre-commit scripts.
+
+![1670987715878](image/README/1670987715878.png)
 
 
 ### Workflow
